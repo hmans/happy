@@ -53,7 +53,7 @@ module Happy
 
       def build(&blk)
         Class.new(self).tap do |klass|
-          klass.instance_eval &blk
+          klass.instance_eval(&blk) if blk
         end
       end
     end
