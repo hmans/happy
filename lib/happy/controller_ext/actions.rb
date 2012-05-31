@@ -73,13 +73,19 @@ module Happy
         response[name] = value
       end
 
-      def invoke(klass, options = {}, &blk)
-        klass.new(env, options, &blk).perform
-      end
-
-      def run(app)
-        context.response = app.call(request.env)
-        halt!
+      def run(thing, options = {}, &blk)
+        if thing.is_a?(Class) && thing.ancestors.include?(Happy::Controller)
+          # Happy controllers!
+          thing.new(env, options, &blk).perform
+        elsif thing.respond_to?(:call)
+          # Rack apps!
+          context.response = thing.call(request.env)
+          halt!
+        elsif thing.respond_to?(:to_s)
+          thing.to_s
+        else
+          raise "Don't know how to run #{thing.inspect} :("
+        end
       end
     end
   end

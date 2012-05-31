@@ -63,6 +63,48 @@ module Happy
       end
     end
 
+    describe '#run' do
+      it "passes control to another controller" do
+        class InnerController < Controller
+          route { 'awesome!' }
+        end
+
+        def app
+          build_controller { run InnerController }
+        end
+
+        response_for { get '/' }.body.should == 'awesome!'
+      end
+
+      it "passes control to a Rack app" do
+        class SomeRackApp
+          def self.call(env)
+            Rack::Response.new('racksome!')
+          end
+        end
+
+        def app
+          build_controller { run SomeRackApp }
+        end
+
+        response_for { get '/' }.body.should == 'racksome!'
+      end
+
+      it "falls back to .to_s" do
+        class SomeClass
+          def self.to_s
+            "stringsome!"
+          end
+        end
+
+        def app
+          build_controller { run SomeClass }
+        end
+
+        response_for { get '/' }.body.should == 'stringsome!'
+      end
+    end
+
     describe '#header' do
       it "sets the specified header in the response" do
         subject.send(:context).response.should_receive(:[]=).with('Content-type', 'text/css')
