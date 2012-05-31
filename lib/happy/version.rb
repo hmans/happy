@@ -1,3 +1,3 @@
 module Happy
-  VERSION = "0.1.0.pre.6"
+  VERSION = "0.1.0.pre7"
 end
