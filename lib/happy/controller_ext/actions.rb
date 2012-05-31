@@ -32,7 +32,7 @@ module Happy
       end
 
       def redirect!(to, status = 302)
-        header "Location", url_for(to)
+        header :location, url_for(to)
         response.status = status
         halt!
       end
