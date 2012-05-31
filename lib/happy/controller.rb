@@ -1,12 +1,12 @@
-require 'happy/routing'
-require 'happy/actions'
-require 'happy/rackable'
+require 'happy/controller_ext/routing'
+require 'happy/controller_ext/actions'
+require 'happy/controller_ext/rackable'
 
 module Happy
   class Controller
-    include Routing
-    include Actions
-    include Rackable
+    include ControllerExtensions::Routing
+    include ControllerExtensions::Actions
+    include ControllerExtensions::Rackable
 
     attr_reader :options, :env
 
