@@ -2,7 +2,6 @@ require 'active_support/all' # SMELL
 
 require 'happy/context'
 require 'happy/controller'
-require 'happy/static'
 
 module Happy
   module Errors
