@@ -14,6 +14,10 @@ module Happy
             end
             path('number-:num') { serve! "num = #{params['num']}" }
             path('return-value') { 'moo?' }
+            path('resource') do
+              get { 'GET resource' }
+              post { 'POST resource' }
+            end
             serve! "root"
           end
         end
@@ -43,6 +47,11 @@ module Happy
 
       it "executes the contained serve! call if no sub-paths match" do
         response_for { get '/hello' }.body.should == 'Please provide a name.'
+      end
+
+      it "just matches the method if no path name is given" do
+        response_for { get '/resource' }.body.should == 'GET resource'
+        response_for { post '/resource' }.body.should == 'POST resource'
       end
 
       it "parses parameters when the provided path is a symbol" do
