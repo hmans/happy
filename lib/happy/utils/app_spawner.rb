@@ -4,6 +4,7 @@ module Happy
       attr_reader :options
 
       def initialize(options = {})
+        @app = nil
         @options = {
           :scripts => './app/*.rb'
         }.merge(options)
@@ -26,7 +27,7 @@ module Happy
       end
 
       def reload_app?
-        !Happy.env.production?
+        !Happy.env.production? || @app.nil?
       end
     end
   end
