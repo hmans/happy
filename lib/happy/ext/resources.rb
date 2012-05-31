@@ -5,7 +5,7 @@ module Happy
     module Resources
       module ControllerExtensions
         def resource(klass, options = {}, &blk)
-          invoke ResourceMounter, options.merge(:class => klass), &blk
+          run ResourceMounter, options.merge(:class => klass), &blk
         end
       end
 
