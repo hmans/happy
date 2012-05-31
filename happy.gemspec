@@ -14,4 +14,9 @@ Gem::Specification.new do |gem|
   gem.name          = "happy"
   gem.require_paths = ["lib"]
   gem.version       = Happy::VERSION
+
+  gem.add_dependency 'activesupport', '~> 3.1'
+  gem.add_dependency 'rack', '~> 1.4'
+  gem.add_dependency 'happy-helpers' # TODO: , '~> 0.1.0'
+  gem.add_dependency 'allowance', '>= 0.1.1'
 end
