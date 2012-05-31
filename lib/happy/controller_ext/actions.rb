@@ -10,7 +10,7 @@ module Happy
 
         # Mix in default options
         options = {
-          layout: context.layout
+          :layout => context.layout
         }.merge(options)
 
         # Add optional headers et al
