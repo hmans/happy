@@ -2,8 +2,9 @@ module Happy
   module ControllerExtensions
     module Routing
       def path_to_regexp(path)
-        path = ":#{path}" if path.is_a?(Symbol)
-        Regexp.compile('^'+path.gsub(/\)/, ')?').gsub(/\//, '\/').gsub(/\./, '\.').gsub(/:(\w+)/, '(?<\\1>.+)')+'$')
+        # Since we want to be compatible with Ruby 1.8.7, we unfortunately can't use named captures like this:
+        # Regexp.compile('^'+path.gsub(/\)/, ')?').gsub(/\//, '\/').gsub(/\./, '\.').gsub(/:(\w+)/, '(?<\\1>.+)')+'$')
+        Regexp.compile('^'+path.gsub(/\)/, ')?').gsub(/\//, '\/').gsub(/\./, '\.').gsub(/:(\w+)/, '(.+)')+'$')
       end
 
       def path(*args, &blk)
@@ -11,18 +12,25 @@ module Happy
         args = [nil] if args.empty?
 
         args.each do |name|
+          # If a path name has been given, match it against the next request path part.
           if name.present?
+            # convert symbols to ":foo" type string
+            name = ":#{name}" if name.is_a?(Symbol)
             path_match = path_to_regexp(name).match(remaining_path.first)
           end
 
+          # Match the request method, if specified
           method_matched = [nil, request.request_method.downcase.to_sym].include?(options[:method])
+
           path_matched   = (path_match || (name.nil? && remaining_path.empty?))
 
           # Only do something here if method and requested path both match
           if path_matched && method_matched
             # Transfer variables contained in path name to params hash
             if path_match
-              path_match.names.each { |k| request.params[k] = path_match[k] }
+              name.scan(/:(\w+)/).flatten.each do |var|
+                request.params[var] = path_match.captures.shift
+              end
               remaining_path.shift
             end
 
