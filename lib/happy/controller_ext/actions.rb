@@ -42,7 +42,7 @@ module Happy
       end
 
       def content_type(type)
-        header 'Content-type', type
+        header :content_type, type
       end
 
       def max_age(t, options = {})
