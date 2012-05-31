@@ -50,6 +50,12 @@ module Happy
       def context_class
         Happy::Context
       end
+
+      def build(&blk)
+        Class.new(self).tap do |klass|
+          klass.instance_eval &blk
+        end
+      end
     end
   end
 end
