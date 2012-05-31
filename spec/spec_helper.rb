@@ -8,6 +8,13 @@ require 'rack/test'
 
 require 'happy'
 
+module DefaultApp
+  def app
+    subject
+  end
+end
+
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
+  conf.include DefaultApp
 end

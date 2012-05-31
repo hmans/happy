@@ -2,15 +2,25 @@ require 'spec_helper'
 
 module Happy
   describe Controller do
+    subject do
+      Controller.build do
+        route do
+          serve! "it works"
+        end
+      end
+    end
+
+    it "is mountable as a Rack app" do
+      subject.should respond_to(:call)
+      get '/'
+      last_response.body.should == 'it works'
+    end
+
     describe ".build" do
       subject do
         Controller.build do
           route { serve! "yay!" }
         end
-      end
-
-      def app
-        subject
       end
 
       it "creates a new controller class" do
@@ -22,19 +32,5 @@ module Happy
         last_response.body.should == 'yay!'
       end
     end
-
-    it "is also a Rack app" do
-      def app
-        Controller.build do
-          route do
-            serve! "it works"
-          end
-        end
-      end
-
-      get '/'
-      last_response.body.should == 'it works'
-    end
-
   end
 end
