@@ -14,7 +14,7 @@ module Happy
       :render, :url_for,
       :to => :context
 
-    def initialize(env = nil, options = {}, &blk)
+    def initialize(env = {}, options = {}, &blk)
       @env = env
       @options = options
       instance_exec(&blk) if blk
