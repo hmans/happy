@@ -22,5 +22,26 @@ module Happy
         subject.content_type 'text/css'
       end
     end
+
+    describe 'redirect!' do
+      it "triggers a redirection to the specified URL" do
+        def app
+          build_controller { redirect! 'http://www.test.com' }
+        end
+
+        get '/'
+        last_response.status.should == 302
+        last_response.headers['Location'].should == 'http://www.test.com'
+      end
+
+      it "sets the provided status code" do
+        def app
+          build_controller { redirect! 'http://www.test.com', 301 }
+        end
+
+        get '/'
+        last_response.status.should == 301
+      end
+    end
   end
 end

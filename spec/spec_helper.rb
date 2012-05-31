@@ -17,6 +17,14 @@ module SpecHelpers
     yield if block_given?
     last_response
   end
+
+  def build_controller(&blk)
+    Happy::Controller.build do
+      route do
+        instance_exec(&blk)
+      end
+    end
+  end
 end
 
 RSpec.configure do |conf|
