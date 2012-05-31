@@ -13,13 +13,18 @@ module Happy
           :layout => context.layout
         }.merge(options)
 
-        # Add optional headers et al
-        response.status = options[:status] if options.has_key?(:status)
-        response['Content-type'] = options[:content_type] if options.has_key?(:content_type)
+        # Add status code from options
+        response.status = options.delete(:status) if options.has_key?(:status)
+
+        # Extract layout
+        layout = options.delete(:layout)
+
+        # Treat remaining options as headers
+        options.each { |k, v| header k, v }
 
         # Apply layout, if available
-        if options[:layout]
-          data = render(options[:layout]) { data }
+        if layout
+          data = render(layout) { data }
         end
 
         # Set response body and finish request
