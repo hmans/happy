@@ -60,10 +60,11 @@ module Happy
       end
 
       def cache_control(s)
-        header 'Cache-control', s
+        header :cache_control, s
       end
 
       def header(name, value)
+        name = name.to_s.dasherize.humanize if name.is_a?(Symbol)
         response[name] = value
       end
 
