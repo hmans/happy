@@ -8,13 +8,18 @@ require 'rack/test'
 
 require 'happy'
 
-module DefaultApp
+module SpecHelpers
   def app
     subject
+  end
+
+  def response_for
+    yield if block_given?
+    last_response
   end
 end
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
-  conf.include DefaultApp
+  conf.include SpecHelpers
 end
