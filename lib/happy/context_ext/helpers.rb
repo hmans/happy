@@ -7,6 +7,7 @@ module Happy
 
       def render(what, options = {}, &blk)
         case what
+          when NilClass   then ''
           when String     then render_template(what, options, &blk)
           when Enumerable then what.map { |i| render(i, options, &blk) }.join
           else render_resource(what, options)
