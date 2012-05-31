@@ -36,6 +36,10 @@ module Happy
       it "sets extra options as response headers" do
         response_for { get '/with_headers' }['Content-type'].should == 'text/css'
       end
+
+      it "finishes the rendering by throwing :done" do
+        expect { subject.serve! "body" }.to throw_symbol :done
+      end
     end
 
     describe '#redirect!' do
