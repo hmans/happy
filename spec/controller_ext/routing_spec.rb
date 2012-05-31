@@ -13,6 +13,7 @@ module Happy
               serve! "Please provide a name."
             end
             path('number-:num') { serve! "num = #{params['num']}" }
+            path('return-value') { 'moo?' }
             serve! "root"
           end
         end
@@ -21,6 +22,10 @@ module Happy
       it "routes requests to the specified path to its contained block" do
         response_for { get '/' }.body.should == 'root'
         response_for { get '/foo' }.body.should == 'bar'
+      end
+
+      it "renders its block's results if no other #serve! call is made" do
+        response_for { get '/return-value' }.body.should == 'moo?'
       end
 
       it "routes independently from the request method" do
