@@ -8,9 +8,24 @@ Happy is a toolkit for developing web applications using Ruby. Inspired by both 
 
 Furthermore, the way Happy handles incoming requests is vastly different from how most of the other frameworks do it, offering a new, extremely flexible and, yes, fun way of building your application.
 
-### Example
+### Examples
 
-How about a little example of a small Happy application?
+"Hello world" with Happy:
+
+```ruby
+# config.ru
+require 'happy'
+
+class MyApp < Happy::Controller
+  route do
+    'Hello world'
+  end
+end
+
+run MyApp
+```
+
+How about something a little bit closer to reality?
 
 ``` ruby
 # config.ru
