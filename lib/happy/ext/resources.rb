@@ -99,14 +99,10 @@ module Happy
             :plural_name   => options[:class].to_s.tableize.pluralize
           }.merge(@options)
 
-        puts url
-
           path options[:plural_name] do
-        puts url
             get('new') { do_new }
 
             path :id do
-        puts url
               get         { do_show }
               post        { do_update }
               get('edit') { do_edit }
