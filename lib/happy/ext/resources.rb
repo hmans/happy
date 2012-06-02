@@ -10,6 +10,10 @@ module Happy
       end
 
       class ResourceMounter < Happy::Controller
+        def root_url
+          super(options[:plural_name])
+        end
+
         def render_resource_template(name)
           render "#{options[:plural_name]}/#{name}.html.haml"
         end
@@ -95,10 +99,14 @@ module Happy
             :plural_name   => options[:class].to_s.tableize.pluralize
           }.merge(@options)
 
+        puts url
+
           path options[:plural_name] do
+        puts url
             get('new') { do_new }
 
             path :id do
+        puts url
               get         { do_show }
               post        { do_update }
               get('edit') { do_edit }

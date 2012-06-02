@@ -5,7 +5,7 @@ module Happy
   class Context
     include Helpers
 
-    attr_reader   :request, :response, :remaining_path
+    attr_reader   :request, :response, :previous_path, :remaining_path
     attr_accessor :layout, :controller
     delegate      :params, :session, :to => :request
 
@@ -13,6 +13,7 @@ module Happy
       @request    = request
       @response   = response
       @remaining_path = @request.path.split('/').reject {|s| s.blank? }
+      @previous_path = []
       @layout     = nil
       @controller = nil
     end

@@ -31,7 +31,7 @@ module Happy
               name.scan(/:(\w+)/).flatten.each do |var|
                 request.params[var] = path_match.captures.shift
               end
-              remaining_path.shift
+              previous_path << remaining_path.shift
             end
 
             serve! instance_exec(&blk)

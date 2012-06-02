@@ -8,15 +8,19 @@ module Happy
     include Actions
     include Rackable
 
-    attr_reader :options, :env
+    attr_reader :options, :env, :root_path
 
-    delegate :request, :response, :remaining_path, :params, :session,
+    delegate :request, :response, :params, :session,
+      :previous_path, :remaining_path,
       :render, :url_for,
       :to => :context
 
     def initialize(env = {}, options = {}, &blk)
       @env = env
       @options = options
+
+      # Save a copy of the current path as this controller's root path.
+      @root_path = context.previous_path.dup
 
       # Execute block against this instance, allowing the controller to
       # provide a DSL for configuration.
@@ -27,6 +31,16 @@ module Happy
       context.with_controller(self) do
         route
       end
+    end
+
+  protected
+
+    def url(extras = nil)
+      url_for(previous_path, extras)
+    end
+
+    def root_url(extras = nil)
+      url_for(root_path, extras)
     end
 
   private

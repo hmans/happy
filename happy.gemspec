@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'activesupport', '~> 3.1'
   gem.add_dependency 'rack', '~> 1.4'
-  gem.add_dependency 'happy-helpers', '~> 0.1.0.pre6'
+  gem.add_dependency 'happy-helpers', '~> 0.1.0.pre8'
   gem.add_dependency 'allowance', '>= 0.1.1'
 
   gem.add_dependency 'happy-cli', '>= 0.1.0.pre1'
