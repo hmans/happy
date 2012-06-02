@@ -17,6 +17,9 @@ module Happy
     def initialize(env = {}, options = {}, &blk)
       @env = env
       @options = options
+
+      # Execute block against this instance, allowing the controller to
+      # provide a DSL for configuration.
       instance_exec(&blk) if blk
     end
 
