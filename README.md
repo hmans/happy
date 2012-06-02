@@ -57,6 +57,20 @@ class MyApp < Happy::Controller
     # that serves a model resource RESTful-Rails-style.
     c = run ResourceMounter, :class => Article
 
+    # This block of code is executed for every request, so you can do
+    # some crazy stuff here, including only defining specific paths
+    # when certain conditions are given. Just write Ruby! :)
+    if context.user_is_admin?
+      path 'delete_everything' do
+        Article.delete_all
+
+        # How about rendering a view template and passing
+        # variables to it?
+        render 'admin_message.erb',
+          :message => 'You just deleted everything. Grats!'
+      end
+    end
+
     # If we reach this point, the request still hasn't been handled, so
     # the user must by trying to access the root URL. How about a redirect
     # to the URL of the previously invoked controller?
