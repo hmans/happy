@@ -1,9 +1,9 @@
 require 'happy/request'
-require 'happy/context_ext/helpers'
+require 'happy/context/helpers'
 
 module Happy
   class Context
-    include ContextExtensions::Helpers
+    include Helpers
 
     attr_reader   :request, :response, :remaining_path
     attr_accessor :layout, :controller

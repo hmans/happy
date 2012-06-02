@@ -1,7 +1,7 @@
 require 'happy-helpers'
 
 module Happy
-  module ContextExtensions
+  class Context
     module Helpers
       include HappyHelpers::Helpers
 
