@@ -54,12 +54,18 @@ class MyApp < Happy::Controller
     #
     # How about passing control to another controller? In this instance,
     # we're invoking an instance of ResourceMounter, a controller class
-    # that serves a model resource RESTful-Rails-style.
-    c = run ResourceMounter, :class => Article
+    # that serves a model resource RESTful-Rails-style. We'll save a 
+    # reference to the controller for later.
+
+    articles = ResourceMounter.new(:class => Article)
+    articles.perform
+
+    # Or use the shortcut: invoke :resource_mounter, :class => Article
 
     # This block of code is executed for every request, so you can do
     # some crazy stuff here, including only defining specific paths
     # when certain conditions are given. Just write Ruby! :)
+    
     if context.user_is_admin?
       path 'delete_everything' do
         Article.delete_all
@@ -74,7 +80,8 @@ class MyApp < Happy::Controller
     # If we reach this point, the request still hasn't been handled, so
     # the user must by trying to access the root URL. How about a redirect
     # to the URL of the previously invoked controller?
-    redirect! c.url
+    
+    redirect! articles.root_url
   end
 end
 
