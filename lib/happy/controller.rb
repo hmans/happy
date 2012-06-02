@@ -35,15 +35,15 @@ module Happy
 
   protected
 
-    def url(extras = nil)
-      url_for(previous_path, extras)
-    end
-
     def root_url(extras = nil)
       url_for(root_path, extras)
     end
 
   private
+
+    def url(extras = nil)
+      url_for(previous_path, extras)
+    end
 
     def context
       @env['happy.context'] ||= self.class.context_class.from_env(@env)
