@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Happy
-  describe ControllerExtensions::Routing do
+  describe Controller::Routing do
     describe '#path' do
       subject do
         Controller.build do

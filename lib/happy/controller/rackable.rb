@@ -1,5 +1,5 @@
 module Happy
-  module ControllerExtensions
+  class Controller
     module Rackable
       extend ActiveSupport::Concern
 

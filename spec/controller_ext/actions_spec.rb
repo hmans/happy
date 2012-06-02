@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Happy
-  describe ControllerExtensions::Actions do
+  describe Controller::Actions do
     subject { Controller.new }
 
     describe '#serve!' do

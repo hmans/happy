@@ -1,5 +1,5 @@
 module Happy
-  module ControllerExtensions
+  class Controller
     module Routing
       def path_to_regexp(path)
         # Since we want to be compatible with Ruby 1.8.7, we unfortunately can't use named captures like this:

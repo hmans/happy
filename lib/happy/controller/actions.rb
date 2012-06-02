@@ -1,5 +1,5 @@
 module Happy
-  module ControllerExtensions
+  class Controller
     module Actions
       def serve!(data, options = {})
         # Don't serve if there are still bits of path remaining.
