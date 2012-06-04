@@ -1,5 +1,3 @@
-require 'active_support/all' # SMELL
-
 require 'rack'
 require 'happy/context'
 require 'happy/controller'
