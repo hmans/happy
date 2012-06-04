@@ -1,4 +1,7 @@
+# SMELL: really?
 require 'happy-helpers/utils/date_parameter_converter'
+
+# SMELL: do we really need our own request class?
 
 module Happy
   class Request < Rack::Request

@@ -1,5 +1,6 @@
 module Happy
   module Utils
+    # SMELL: this should be a controller, spawning another controller.
     class AppSpawner
       attr_reader :options
 
