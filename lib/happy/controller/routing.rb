@@ -34,10 +34,7 @@ module Happy
               previous_path << remaining_path.shift
             end
 
-            serve! instance_exec(&blk)
-
-            # If we get here, #serve decided not to serve.
-            raise Errors::NotFound
+            serve_or_404! instance_exec(&blk)
           end
         end
       end

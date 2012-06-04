@@ -32,6 +32,13 @@ module Happy
         halt!
       end
 
+      def serve_or_404!(*args)
+        serve!(*args)
+
+        # If we get here, #serve! decided not to serve, so let's raise a 404.
+        raise Errors::NotFound
+      end
+
       def halt!(message = :done)
         throw message
       end

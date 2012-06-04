@@ -7,10 +7,7 @@ module Happy
         @env = env
 
         catch :done do
-          serve! perform
-
-          # If we get here, #serve decided not to serve.
-          raise Errors::NotFound
+          serve_or_404! perform
         end
 
         response
