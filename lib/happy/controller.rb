@@ -46,7 +46,7 @@ module Happy
     end
 
     def context
-      @env['happy.context'] ||= self.class.context_class.from_env(@env)
+      @env['happy.context'] ||= Happy::Context.from_env(@env)
     end
 
     def route
@@ -61,11 +61,7 @@ module Happy
       end
 
       def context(&blk)
-        context_class.class_exec(&blk)
-      end
-
-      def context_class
-        Happy::Context
+        Happy::Context.class_exec(&blk)
       end
 
       def build(&blk)
