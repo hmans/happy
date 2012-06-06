@@ -23,11 +23,11 @@ module Happy
         end
 
         def resource_with_permission_scope(*args)
-          context.permissions.scoped_model(*args, options[:class])
+          permissions.scoped_model(*args, options[:class])
         end
 
         def require_permission!(*args)
-          raise "not allowed" unless can?(*args, options[:class])
+          raise "not allowed" unless permissions.can?(*args, options[:class])
         end
 
         def set_plural_variable(v)

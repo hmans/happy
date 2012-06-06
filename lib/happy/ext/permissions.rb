@@ -13,13 +13,15 @@ module Happy
             end
           end
         end
+
+        alias_method :can, :permissions
       end
 
       module ControllerExtensions
         extend ActiveSupport::Concern
 
         included do
-          delegate :permissions, :to => :context
+          delegate :permissions, :can, :to => :context
         end
       end
     end
