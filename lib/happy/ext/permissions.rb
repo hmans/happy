@@ -6,8 +6,12 @@ module Happy
       module ContextExtensions
         extend ActiveSupport::Concern
 
-        def permissions
-          @permissions ||= Allowance::Permissions.new
+        def permissions(&blk)
+          (@permissions ||= Allowance::Permissions.new).tap do |p|
+            if blk
+              blk.arity == 0 ? p.instance_exec(&blk) : blk.call(p)
+            end
+          end
         end
       end
 
