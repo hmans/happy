@@ -6,12 +6,8 @@ module Happy
       module ContextExtensions
         extend ActiveSupport::Concern
 
-        def permissions(&blk)
-          @permissions ||= Allowance.define
-        end
-
-        def can?(*args)
-          permissions.allowed?(*args)
+        def permissions
+          @permissions ||= Allowance::Permissions.new
         end
       end
 
@@ -19,15 +15,7 @@ module Happy
         extend ActiveSupport::Concern
 
         included do
-          delegate :can?, :to => :context
-        end
-
-        module ClassMethods
-          attr_accessor :permissions_blk
-
-          def permissions(&blk)
-            self.permissions_blk = blk
-          end
+          delegate :permissions, :to => :context
         end
       end
     end

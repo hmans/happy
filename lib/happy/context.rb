@@ -23,11 +23,6 @@ module Happy
       old_controller = self.controller
       self.controller = new_controller
 
-      # execute permissions block    SMELL - better integration
-      if controller.class.respond_to?(:permissions_blk)
-        controller.class.permissions_blk.try(:call, permissions, self)
-      end
-
       # execute block
       yield
     ensure
