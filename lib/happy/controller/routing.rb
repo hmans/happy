@@ -39,24 +39,11 @@ module Happy
         end
       end
 
-      def get(*args, &blk)
-        args.last.is_a?(Hash) ? args.last.merge(:method => :get) : args.push(:method => :get)
-        path(*args, &blk)
-      end
-
-      def post(*args, &blk)
-        args.last.is_a?(Hash) ? args.last.merge(:method => :post) : args.push(:method => :post)
-        path(*args, &blk)
-      end
-
-      def put(*args, &blk)
-        args.last.is_a?(Hash) ? args.last.merge(:method => :put) : args.push(:method => :put)
-        path(*args, &blk)
-      end
-
-      def delete(*args, &blk)
-        args.last.is_a?(Hash) ? args.last.merge(:method => :delete) : args.push(:method => :delete)
-        path(*args, &blk)
+      [:get, :post, :put, :delete].each do |method|
+        define_method(method) do |*args, &blk|
+          args.last.is_a?(Hash) ? args.last.merge(:method => method) : args.push(:method => method)
+          path(*args, &blk)
+        end
       end
     end
   end
