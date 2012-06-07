@@ -7,11 +7,11 @@ describe Happy do
     end
 
     it "provides #development?, #production? etc." do
-      ENV.should_receive(:[]).twice.with('RACK_ENV').and_return('development')
+      ENV['RACK_ENV'] = 'development'
       Happy.env.should be_development
       Happy.env.should_not be_production
 
-      ENV.should_receive(:[]).twice.with('RACK_ENV').and_return('production')
+      ENV['RACK_ENV'] = 'production'
       Happy.env.should be_production
       Happy.env.should_not be_development
     end
