@@ -3,11 +3,13 @@ require 'spec_helper'
 module Happy
   describe Controller do
     subject do
-      Controller.build do
-        route do
+      class MyController < Happy::Controller
+        def route
           serve! "it works"
         end
       end
+
+      MyController
     end
 
     it "is mountable as a Rack app" do
@@ -19,7 +21,9 @@ module Happy
     describe ".build" do
       subject do
         Controller.build do
-          route { serve! "yay!" }
+          def route
+            serve! "yay!"
+          end
         end
       end
 

@@ -50,23 +50,16 @@ module Happy
     end
 
     def route
-      instance_exec(&self.class.route_blk) if self.class.route_blk
+      # override this in subclasses
     end
 
     class << self
-      attr_reader :route_blk
-
-      def route(&blk)
-        @route_blk = blk
-      end
-
-      def context(&blk)
-        Happy::Context.class_exec(&blk)
-      end
-
+      # Create a new subclass of Happy::Controller, using the provided
+      # block for defining class methods et al.
+      #
       def build(&blk)
         Class.new(self).tap do |klass|
-          klass.instance_eval(&blk) if blk
+          klass.class_eval(&blk) if blk
         end
       end
     end

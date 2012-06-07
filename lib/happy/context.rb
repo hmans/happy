@@ -5,8 +5,8 @@ module Happy
   class Context
     include Helpers
 
-    attr_reader   :request, :response, :previous_path, :remaining_path
-    attr_accessor :layout, :controller
+    attr_reader   :request, :previous_path, :remaining_path
+    attr_accessor :layout, :controller, :response
     delegate      :params, :session, :to => :request
 
     def initialize(request, response)
@@ -28,10 +28,6 @@ module Happy
     ensure
       # switch back to previous controller
       self.controller = old_controller
-    end
-
-    def response=(r)
-      @response = r
     end
 
   private

@@ -16,13 +16,11 @@ Furthermore, the way Happy handles incoming requests is vastly different from ho
 # config.ru
 require 'happy'
 
-class MyApp < Happy::Controller
-  route do
-    'Hello world'
-  end
+Happy.route do
+  'Hello world'
 end
 
-run MyApp
+run Happy
 ```
 
 How about something a little bit closer to reality?
@@ -31,62 +29,59 @@ How about something a little bit closer to reality?
 # config.ru
 require 'happy'
 
-class MyApp < Happy::Controller
-  route do
-    # Set a default layout for all responses!
-    layout 'application.erb'
+Happy.route do
+  # Set a default layout for all responses!
+  layout 'application.erb'
 
-    # Happily deal with sub-paths!
-    path 'hello' do
-      # Let's use a different layout here.
-      layout 'hello_layout.erb'
+  # Happily deal with sub-paths!
+  path 'hello' do
+    # Let's use a different layout here.
+    layout 'hello_layout.erb'
 
-      # Happily deal with parameters contained in paths!
-      path :name do
-        # Just return a string to happily render it!
-        "Hello, #{params['name']}"!
-      end
-
-      "Silly user, didn't provide a name!"
+    # Happily deal with parameters contained in paths!
+    path :name do
+      # Just return a string to happily render it!
+      "Hello, #{params['name']}"!
     end
 
-    # Now let's do something a little bit more exciting!
-    #
-    # How about passing control to another controller? In this instance,
-    # we're invoking an instance of ResourceMounter, a controller class
-    # that serves a model resource RESTful-Rails-style. We'll save a 
-    # reference to the controller for later.
-
-    articles = ResourceMounter.new(:class => Article)
-    articles.perform
-
-    # Or use the shortcut: invoke :resource_mounter, :class => Article
-
-    # This block of code is executed for every request, so you can do
-    # some crazy stuff here, including only defining specific paths
-    # when certain conditions are given. Just write Ruby! :)
-    
-    if context.user_is_admin?
-      path 'delete_everything' do
-        Article.delete_all
-
-        # How about rendering a view template and passing
-        # variables to it?
-        render 'admin_message.erb',
-          :message => 'You just deleted everything. Grats!'
-      end
-    end
-
-    # If we reach this point, the request still hasn't been handled, so
-    # the user must by trying to access the root URL. How about a redirect
-    # to the URL of the previously invoked controller?
-    
-    redirect! articles.root_url
+    "Silly user, didn't provide a name!"
   end
+
+  # Now let's do something a little bit more exciting!
+  #
+  # How about passing control to another controller? In this instance,
+  # we're invoking an instance of ResourceMounter, a controller class
+  # that serves a model resource RESTful-Rails-style. We'll save a 
+  # reference to the controller for later.
+
+  articles = ResourceMounter.new(:class => Article)
+  articles.perform
+
+  # Or use the shortcut: invoke :resource_mounter, :class => Article
+
+  # This block of code is executed for every request, so you can do
+  # some crazy stuff here, including only defining specific paths
+  # when certain conditions are given. Just write Ruby! :)
+  
+  if context.user_is_admin?
+    path 'delete_everything' do
+      Article.delete_all
+
+      # How about rendering a view template and passing
+      # variables to it?
+      render 'admin_message.erb',
+        :message => 'You just deleted everything. Grats!'
+    end
+  end
+
+  # If we reach this point, the request still hasn't been handled, so
+  # the user must by trying to access the root URL. How about a redirect
+  # to the URL of the previously invoked controller?
+  
+  redirect! articles.root_url
 end
 
-# It's just a Rack app, so let's run it.
-run MyApp
+run Happy
 ```
 
 

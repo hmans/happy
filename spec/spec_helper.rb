@@ -18,11 +18,7 @@ module SpecHelpers
   end
 
   def build_controller(&blk)
-    Happy::Controller.build do
-      route do
-        instance_exec(&blk)
-      end
-    end
+    Happy.route(&blk)
   end
 end
 

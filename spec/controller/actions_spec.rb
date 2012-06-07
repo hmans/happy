@@ -66,7 +66,9 @@ module Happy
     describe '#run' do
       it "passes control to another controller" do
         class InnerController < Controller
-          route { 'awesome!' }
+          def route
+            'awesome!'
+          end
         end
 
         def app

@@ -4,22 +4,20 @@ module Happy
   describe Controller::Routing do
     describe '#path' do
       subject do
-        Controller.build do
-          route do
-            path('foo') { serve! 'bar' }
-            path('one', 'two') { serve! 'onetwo' }
-            path('hello') do
-              path(:name) { serve! "Hello #{params['name']}" }
-              serve! "Please provide a name."
-            end
-            path('number-:num') { serve! "num = #{params['num']}" }
-            path('return-value') { 'moo?' }
-            path('resource') do
-              get { 'GET resource' }
-              post { 'POST resource' }
-            end
-            serve! "root"
+        Happy.route do
+          path('foo') { serve! 'bar' }
+          path('one', 'two') { serve! 'onetwo' }
+          path('hello') do
+            path(:name) { serve! "Hello #{params['name']}" }
+            serve! "Please provide a name."
           end
+          path('number-:num') { serve! "num = #{params['num']}" }
+          path('return-value') { 'moo?' }
+          path('resource') do
+            get { 'GET resource' }
+            post { 'POST resource' }
+          end
+          serve! "root"
         end
       end
 
