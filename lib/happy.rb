@@ -1,4 +1,5 @@
 require 'rack'
+require 'happy/version'
 require 'happy/context'
 require 'happy/controller'
 

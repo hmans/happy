@@ -1,7 +1,7 @@
-require 'happy/ext/permissions'
+require 'happy/extras/permissions'
 
 module Happy
-  module Extensions
+  module Extras
     module Resources
       module ControllerExtensions
         def resource(klass, options = {}, &blk)
@@ -117,4 +117,4 @@ module Happy
   end
 end
 
-Happy::Controller.send(:include, Happy::Extensions::Resources::ControllerExtensions)
+Happy::Controller.send(:include, Happy::Extras::Resources::ControllerExtensions)

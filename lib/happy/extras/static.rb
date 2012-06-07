@@ -1,5 +1,5 @@
 module Happy
-  module Extensions
+  module Extras
     class Static < Happy::Controller
       def route
         run Rack::File.new(options[:path])

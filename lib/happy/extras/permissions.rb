@@ -1,7 +1,7 @@
 require 'allowance'
 
 module Happy
-  module Extensions
+  module Extras
     module Permissions
       module ContextExtensions
         extend ActiveSupport::Concern
@@ -28,5 +28,5 @@ module Happy
   end
 end
 
-Happy::Context.send(:include, Happy::Extensions::Permissions::ContextExtensions)
-Happy::Controller.send(:include, Happy::Extensions::Permissions::ControllerExtensions)
+Happy::Context.send(:include, Happy::Extras::Permissions::ContextExtensions)
+Happy::Controller.send(:include, Happy::Extras::Permissions::ControllerExtensions)
