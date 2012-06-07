@@ -98,24 +98,12 @@ Controllers are the magic behind Happy; they're essentially **re-useable, self-c
 
 ### More Happy Features
 
-In addition to its fun and flexible approach to writing web applications, Happy boasts the following features, and more:
+In addition to its fun and flexible approach to writing web applications, Happy boasts the following features, among others:
 
-* Run-time permission management provided by [Allowance](https://github.com/hmans/allowance).
+* Optional run-time permission management provided by [Allowance](https://github.com/hmans/allowance).
 * A set of Happy Controllers making you super-productive, from serving static files to minifying JavaScript assets or even serving complete RESTful resources.
 * A set of view helpers including [simple_form](https://github.com/plataformatec/simple_form) inspired forms on auto-pilot, with full support for translations and localization through [I18n](https://github.com/svenfuchs/i18n).
 * Happy _loves_ Rack. You can mount Rack Middleware as well as pass control to another Rack application, just like that. Or use Happy Controllers from within other applications -- they're just Rack apps. And, of course, serve your Happy application through any Rack-compliant Rack server.
-
-
-### Happy is Opinionated Software
-
-Happy is opinionated software. Its design and functionality follow a certain set of opinions, a few of which are:
-
-* **The core framework should be very simple**. As described above, the entire framework revolves around two important classes (Happy::Controller and Happy::Context). Everything that's not directly related to the core framework should be provided by additional gems. (For example, anything that is view helper related has been moved to the [HappyHelpers](https://github.com/hmans/happy-helpers) gem, and the permission management code has been extracted to the [Allowance](https://github.com/hmans/allowance) gem.) Happy isn't trying to be a kitchen sink framework.
-* **Full-stack is boring**. Sure, it's nice if your framework of choice is holding your hands almost every step you go, but it's when you get to that point where you want to do something _differently_ from what your framework provides to you that you'll start hitting walls. For example, Happy doesn't generate data layer code for you; you're expected (and free to) simply use any ORM (or whatever) you desire, if any. For example, adding [Mongoid](http://mongoid.org/) to your Happy project is just two lines of code. Don't worry, we'll provide recipes; you don't need generators for that kind of stuff.
-* **Routing sucks**. Pretty much all other Ruby web application frameworks go to great lengths to map incoming requests to code through regular expressions (or DSLs allowing you to specify routes that are then compiled to regular expressions behind the scenes.) It's a very fast, but somewhat inflexible approach.
-* **Objects are awesome**. Frameworks like Rails are, technically speaking, object-oriented, but really only use classes mostly as containers for code. Requests are mapped (through the aforementioned routes) to controller classes, which are then instantiated and passed control to. It works, but it's also really boring. Objects are fun! Happy uses the request URL as a roadmap through your application's object graph. It allows you to think of your application as a nested tree of _things_.
-
-If you find that you agree with these, you're going to _love_ building Happy web applications.
 
 
 ## Current Status
