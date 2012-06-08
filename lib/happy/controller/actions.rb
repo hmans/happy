@@ -2,34 +2,33 @@ module Happy
   class Controller
     module Actions
       def serve!(data, options = {})
-        # Don't serve if there are still bits of path remaining.
-        return unless remaining_path.empty?
+        only_if_path_matches do
+          # Don't serve is data is not a string.
+          return unless data.is_a?(String)
 
-        # Don't serve is data is not a string.
-        return unless data.is_a?(String)
+          # Mix in default options
+          options = {
+            :layout => context.layout
+          }.merge(options)
 
-        # Mix in default options
-        options = {
-          :layout => context.layout
-        }.merge(options)
+          # Add status code from options
+          response.status = options.delete(:status) if options.has_key?(:status)
 
-        # Add status code from options
-        response.status = options.delete(:status) if options.has_key?(:status)
+          # Extract layout
+          layout = options.delete(:layout)
 
-        # Extract layout
-        layout = options.delete(:layout)
+          # Treat remaining options as headers
+          options.each { |k, v| header k, v }
 
-        # Treat remaining options as headers
-        options.each { |k, v| header k, v }
+          # Apply layout, if available
+          if layout
+            data = render(layout) { data }
+          end
 
-        # Apply layout, if available
-        if layout
-          data = render(layout) { data }
+          # Set response body and finish request
+          response.body = [data]
+          halt!
         end
-
-        # Set response body and finish request
-        response.body = [data]
-        halt!
       end
 
       def serve_or_404!(*args)
@@ -40,14 +39,17 @@ module Happy
       end
 
       def halt!(message = :done)
-        throw message
+        only_if_path_matches do
+          throw message
+        end
       end
 
       def redirect!(to, status = 302)
-        # TODO: only redirect if the url matches! (similar to #serve!)
-        header :location, url_for(to)
-        response.status = status
-        halt!
+        only_if_path_matches do
+          header :location, url_for(to)
+          response.status = status
+          halt!
+        end
       end
 
       def layout(name)
@@ -88,12 +90,25 @@ module Happy
         elsif thing.respond_to?(:call)
           # Rack apps!
           context.response = thing.call(request.env)
-          halt!
+          throw :done
         elsif thing.respond_to?(:to_s)
           thing.to_s
         else
           raise "Don't know how to run #{thing.inspect} :("
         end
+      end
+
+
+      private
+
+      # Execute the provided block, unless there are still bits of
+      # unprocessed path left (which indicates that the current path
+      # is not the path the user requested.)
+      #
+      def only_if_path_matches
+        return unless remaining_path.empty?
+
+        yield if block_given?
       end
     end
   end

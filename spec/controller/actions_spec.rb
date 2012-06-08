@@ -74,6 +74,22 @@ module Happy
         get '/'
         last_response.status.should == 301
       end
+
+      it "doesn't do anything if the current path does not match the request path" do
+        def app
+          Happy.route do
+            redirect! "http://mans.de"
+
+            path 'test' do
+              redirect! "http://schnitzelpress.org"
+            end
+          end
+        end
+
+        get '/test'
+        last_response.should be_redirect
+        last_response.headers['Location'].should == 'http://schnitzelpress.org'
+      end
     end
 
     describe '#run' do
