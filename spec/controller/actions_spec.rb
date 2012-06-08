@@ -40,6 +40,19 @@ module Happy
       it "finishes the rendering by throwing :done" do
         expect { subject.serve! "body" }.to throw_symbol :done
       end
+
+      it "doesn't do anything if the current path does not match the request path" do
+        def app
+          Happy.route do
+            serve! "This should not render"
+            path 'test' do
+              serve! "But this should render"
+            end
+          end
+        end
+
+        response_for { get '/test' }.body.should == "But this should render"
+      end
     end
 
     describe '#redirect!' do
