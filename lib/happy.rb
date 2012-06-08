@@ -1,14 +1,10 @@
 require 'rack'
 require 'happy/version'
+require 'happy/errors'
 require 'happy/context'
 require 'happy/controller'
 
 module Happy
-  module Errors
-    class Base < StandardError ; end
-    class NotFound < Base ; end
-  end
-
   def self.env
     ActiveSupport::StringInquirer.new(ENV['RACK_ENV'] || 'development')
   end
@@ -33,3 +29,6 @@ module Happy
     @last_controller_class_created.try(:call, env) or raise "Please use Happy.route to define some routes."
   end
 end
+
+__END__
+yooooooo!

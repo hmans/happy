@@ -44,6 +44,7 @@ module Happy
       end
 
       def redirect!(to, status = 302)
+        # TODO: only redirect if the url matches! (similar to #serve!)
         header :location, url_for(to)
         response.status = status
         halt!

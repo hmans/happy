@@ -1,0 +1,131 @@
+<html>
+<head>
+  <style>
+    body {
+      font: 18px/24px "Helvetica Neue",Arial,Helvetica,sans-serif;
+      color: #555;
+      background-color: #fffef8;
+      padding: 30px 0 100px 0;
+    }
+    .container {
+      width: 800px;
+      margin: 0 auto;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    h1 {
+      margin: 0 0 0px -4px;
+      font-size: 80px;
+      line-height: 80px;
+      letter-spacing: -0.05em;
+      text-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);
+    }
+    h2 {
+      margin-bottom: 0;
+      margin-top: 2em;
+      text-shadow: 2px 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    h3 {
+      margin-bottom: 0;
+      color: #999;
+    }
+    p.message {
+      margin-top: 0px !important;
+      font-size: 30px;
+      line-height: 40px;
+      margin: 20px 0;
+    }
+    .friendly_message {
+      font-size: 20px;
+      line-height: 30px;
+      color: #777;
+      margin: 20px 0;
+    }
+    code {
+      font-family: Menlo,Monaco,"Lucida Console",Consolas,"Courier New",monotype;
+    }
+    .output {
+      display: block;
+      width: 820px;
+      margin-left: -20px;
+
+      background-color: #222;
+      color: #ccc;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 1em;
+
+      font: 14px/20px Menlo,Monaco,"Lucida Console",Consolas,"Courier New",monotype;
+    }
+    .backtrace {
+      list-style: none;
+      height: 192px;
+      overflow: auto;
+    }
+    .backtrace li.app { color: #fff; }
+    .backtrace li.ruby { color: #c55; }
+    .backtrace li.happy { color: #5c5; }
+    .backtrace .where { font-weight: bold; }
+    .backtrace .location { color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><%= h options[:title] %></h1>
+
+    <p class="message">
+      <%= h options[:message] %>
+    </p>
+
+    <% if options[:friendly_message] %>
+      <p class="friendly_message">
+        <%= options[:friendly_message] %>
+      </p>
+    <% end %>
+
+    <h2>Backtrace:</h2>
+    <ul class="output backtrace">
+      <% exception.backtrace.each do |l| %>
+        <%
+          file, line, where = l.split(':')
+
+          klass = case file
+            when %r{happy/lib/happy} then 'happy'
+            when %r{lib/ruby/gems} then 'ruby'
+            else 'app'
+          end
+        %>
+        <% where =~ /^in `(.+)'$/ %>
+        <li class="<%= klass %>">
+          <span class="where">
+            <%= h ($1 || where) %>
+          </span>
+          <span class="location">
+            @ <%= h file %>:<%= h line %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+
+    <h2>Request Parameters:</h2>
+    <div class="output params">
+      <%= h context.request.params.inspect %>
+    </div>
+
+    <h2>Session:</h2>
+    <div class="output session">
+      <%= h context.request.session.inspect %>
+    </div>
+
+    <h2>Environment:</h2>
+    <div class="output env">
+      <%= h env %>
+    </div>
+
+    <p>
+      If you need help, please drop by <code>#happy</code> on FreeNode.
+    </p>
+  </div>
+</body>
+</html>

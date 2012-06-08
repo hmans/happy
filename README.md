@@ -112,7 +112,6 @@ Happy is being extracted from a web application that I've been working on. I'm t
 
 FWIW, here's a list of important things still missing right now:
 
-* Nicer error pages for 404s, 401s etc.
 * Better logging.
 * Improved view engine compatibility.
 
