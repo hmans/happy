@@ -20,14 +20,14 @@ module Happy
 
     def with_controller(new_controller)
       # remember previous controller
-      old_controller = self.controller
-      self.controller = new_controller
+      old_controller = @controller
+      @controller = new_controller
 
       # execute block
       yield
     ensure
       # switch back to previous controller
-      self.controller = old_controller
+      @controller = old_controller
     end
 
   private
