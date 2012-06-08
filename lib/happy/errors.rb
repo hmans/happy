@@ -3,10 +3,26 @@ module Happy
     class Base < StandardError ; end
     class NotFound < Base ; end
 
+    # Render a HTML page for the given exception.
+    #
+    # @param [Exception] exception
+    #   The exception to display.
+    # @param [Hash] env
+    #   The current Rack environment hash (used to display information on request parameters, session contents and such.)
+    #
+    # @option options [String] :title
+    #   Title of error page
+    # @option options [String] :message
+    #   Message to be displayed on error page, right underneath the title.
+    # @option options [String] :friendly_message
+    #   Friendly error message to be displayed below title and message.
+    #   If left blank, will be generated from the exception message.
+    #
     def self.html(exception, env, options = {})
       options = {
         :title => exception.class.to_s,
-        :message => exception.message
+        :message => exception.message,
+        :friendly_message => nil
       }.merge(options)
 
       context = env['happy.context']
@@ -22,6 +38,8 @@ module Happy
       # Render error page.
       ERB.new(@html).result(binding)
     end
+
+  protected
 
     def self.friendly_message_for(msg)
       case msg

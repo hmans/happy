@@ -3,6 +3,11 @@ require 'happy/controller/actions'
 require 'happy/controller/rackable'
 
 module Happy
+  # Base class for Happy controllers. A controller's primary job is to act
+  # upon an incoming request, navigating the request URL's path, and finally
+  # deciding on a course of action (eg. rendering something, redirecting the
+  # client, passing control over to another controller, and so on.)
+  #
   class Controller
     include Routing
     include Actions
@@ -15,6 +20,15 @@ module Happy
       :render, :url_for,
       :to => :context
 
+    # Creates a new instance of {Controller}. When a block is provided,
+    # it is run against the new instance, allowing custom controller classes
+    # to provide DSL-like configuration.
+    #
+    # @param env [Hash]
+    #   Rack environment hash.
+    # @param options [Hash]
+    #   Controller options.
+    #
     def initialize(env = {}, options = {}, &blk)
       @env = env
       @options = options
@@ -27,13 +41,15 @@ module Happy
       instance_exec(&blk) if blk
     end
 
+  protected
+
+    # Run this controller, performing its routing logic.
+    #
     def perform
       context.with_controller(self) do
         route
       end
     end
-
-  protected
 
     def root_url(extras = nil)
       url_for(root_path, extras)
@@ -46,22 +62,12 @@ module Happy
     end
 
     def context
-      @env['happy.context'] ||= Happy::Context.from_env(@env)
+      @env['happy.context'] ||= Happy::Context.new(@env)
     end
 
     def route
       # override this in subclasses
     end
 
-    class << self
-      # Create a new subclass of Happy::Controller, using the provided
-      # block for defining class methods et al.
-      #
-      def build(&blk)
-        Class.new(self).tap do |klass|
-          klass.class_eval(&blk) if blk
-        end
-      end
-    end
   end
 end

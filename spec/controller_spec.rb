@@ -18,25 +18,6 @@ module Happy
       last_response.body.should == 'it works'
     end
 
-    describe ".build" do
-      subject do
-        Controller.build do
-          def route
-            serve! "yay!"
-          end
-        end
-      end
-
-      it "creates a new controller class" do
-        subject.ancestors.should include(Controller)
-      end
-
-      it "should use the passed block to initialize the new controller class" do
-        get "/"
-        last_response.body.should == 'yay!'
-      end
-    end
-
     describe '#url' do
       it "returns the current URL" do
         def app

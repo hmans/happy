@@ -25,7 +25,7 @@ run Happy
 
 How about something a little bit closer to reality?
 
-``` ruby
+```ruby
 # config.ru
 require 'happy'
 
