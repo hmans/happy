@@ -1,6 +1,7 @@
 require 'happy/controller/routing'
 require 'happy/controller/actions'
 require 'happy/controller/rackable'
+require 'happy/controller/configurable'
 
 module Happy
   # Base class for Happy controllers. A controller's primary job is to act
@@ -12,6 +13,7 @@ module Happy
     include Routing
     include Actions
     include Rackable
+    include Configurable
 
     attr_reader :options, :env, :root_path
 
