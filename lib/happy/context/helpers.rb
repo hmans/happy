@@ -15,7 +15,8 @@ module Happy
       end
 
       def render_template(name, variables = {}, &blk)
-        HappyHelpers::Templates.render(name, self, variables, &blk)
+        path = @controller ? @controller.config[:views] : './views'
+        HappyHelpers::Templates.render(File.join(path, name), self, variables, &blk)
       end
 
       def render_resource(resource, options = {})
