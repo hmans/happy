@@ -34,7 +34,7 @@ module Happy
               previous_path << remaining_path.shift
             end
 
-            serve_or_404! instance_exec(&blk)
+            serve!(instance_exec(&blk)) or raise Errors::NotFound
           end
         end
       end

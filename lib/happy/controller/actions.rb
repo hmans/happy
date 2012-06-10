@@ -31,13 +31,6 @@ module Happy
         end
       end
 
-      def serve_or_404!(*args)
-        serve!(*args)
-
-        # If we get here, #serve! decided not to serve, so let's raise a 404.
-        raise Errors::NotFound
-      end
-
       def halt!(message = :done)
         only_if_path_matches do
           throw message
@@ -106,9 +99,7 @@ module Happy
       # is not the path the user requested.)
       #
       def only_if_path_matches
-        return unless remaining_path.empty?
-
-        yield if block_given?
+        yield if remaining_path.empty?
       end
     end
   end

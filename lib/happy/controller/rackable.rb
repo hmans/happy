@@ -3,11 +3,9 @@ module Happy
     module Rackable
       extend ActiveSupport::Concern
 
-      def call(env)
-        @env = env
-
+      def handle_request
         catch :done do
-          serve_or_404! perform
+          serve!(perform) or raise Errors::NotFound
         end
 
         response
@@ -24,7 +22,7 @@ module Happy
 
       module ClassMethods
         def call(env)
-          new.call(env)
+          new(env).handle_request
         end
       end
     end
