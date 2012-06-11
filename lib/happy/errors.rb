@@ -18,14 +18,12 @@ module Happy
     #   Friendly error message to be displayed below title and message.
     #   If left blank, will be generated from the exception message.
     #
-    def self.html(exception, env, options = {})
+    def self.html(exception, controller, options = {})
       options = {
         :title => exception.class.to_s,
         :message => exception.message,
         :friendly_message => nil
       }.merge(options)
-
-      context = env['happy.context']
 
       # Load and cache error template.
       @html = begin

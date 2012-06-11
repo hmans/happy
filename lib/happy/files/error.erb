@@ -110,17 +110,17 @@
 
     <h2>Request Parameters:</h2>
     <div class="output params">
-      <%= h context.request.params.inspect %>
+      <%= h controller.request.params.inspect %>
     </div>
 
     <h2>Session:</h2>
     <div class="output session">
-      <%= h context.request.session.inspect %>
+      <%= h controller.request.session.inspect %>
     </div>
 
     <h2>Environment:</h2>
     <div class="output env">
-      <%= h env %>
+      <%= h controller.env %>
     </div>
 
     <p>

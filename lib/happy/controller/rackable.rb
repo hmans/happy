@@ -4,19 +4,21 @@ module Happy
       extend ActiveSupport::Concern
 
       def handle_request
-        catch :done do
-          serve!(perform) or raise Errors::NotFound
+        r = catch :done do
+          serve!(route) or raise Errors::NotFound
         end
 
-        response
+        r ||response
+
       rescue Errors::NotFound => e
-        html = Errors.html e, env,
+        html = Errors.html e, self,
           :title => "Path not found",
           :message => '',
-          :friendly_message => "You performed a <strong>#{context.request.request_method}</strong> request on <strong>#{context.request.path}</strong>, but your application did not know how to handle this request."
+          :friendly_message => "You performed a <strong>#{request.request_method}</strong> request on <strong>#{request.path}</strong>, but your application did not know how to handle this request."
         [404, {'Content-type' => 'text/html'}, [html]]
+
       rescue ::Exception => e
-        html = Errors.html e, env
+        html = Errors.html e, self
         [500, {'Content-type' => 'text/html'}, [html]]
       end
 

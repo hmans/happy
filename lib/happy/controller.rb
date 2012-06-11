@@ -1,7 +1,13 @@
+require 'happy/request'
+require 'happy/response'
+
+require 'happy/controller/helpers'
 require 'happy/controller/routing'
 require 'happy/controller/actions'
 require 'happy/controller/rackable'
 require 'happy/controller/configurable'
+require 'happy/controller/cascadable'
+require 'happy/controller/permissions'
 
 module Happy
   # Base class for Happy controllers. A controller's primary job is to act
@@ -14,13 +20,11 @@ module Happy
     include Actions
     include Rackable
     include Configurable
+    include Cascadable
+    include Permissions
+    include Helpers
 
-    attr_reader :options, :env, :root_path
-
-    delegate :request, :response, :params, :session,
-      :previous_path, :remaining_path,
-      :render, :url_for,
-      :to => :context
+    attr_reader :options, :env
 
     # Creates a new instance of {Controller}. When a block is provided,
     # it is run against the new instance, allowing custom controller classes
@@ -31,45 +35,50 @@ module Happy
     # @param options [Hash]
     #   Controller options.
     #
-    def initialize(env = {}, options = {}, &blk)
-      @env = env
+    def initialize(env_or_parent = {}, options = {}, &blk)
+      if env_or_parent.is_a?(Happy::Controller)
+        @parent_controller = env_or_parent
+        @env = @parent_controller.env
+      else
+        @env = env_or_parent
+      end
+
       @options = options
 
       # Save a copy of the current path as this controller's root path.
-      @root_path = context.previous_path.dup
+      @root_url = request.previous_path.join('/')
 
       # Execute block against this instance, allowing the controller to
       # provide a DSL for configuration.
       instance_exec(&blk) if blk
     end
 
-  protected
-
-    # Run this controller, performing its routing logic.
-    #
-    def perform
-      context.with_controller(self) do
-        route
-      end
+    def request
+      @env['happy.request'] ||= Happy::Request.new(@env)
     end
 
+    def response
+      @env['happy.response'] ||= Happy::Response.new
+    end
+
+  protected
+
     def root_url(extras = nil)
-      url_for(root_path, extras)
+      url_for(@root_url, extras)
     end
 
   private
 
     def url(extras = nil)
-      url_for(previous_path, extras)
-    end
-
-    def context
-      @env['happy.context'] ||= Happy::Context.new(@env)
+      url_for(request.previous_path, extras)
     end
 
     def route
       # override this in subclasses
     end
+
+    def params; request.params; end
+    def session; request.session; end
 
   end
 end

@@ -28,7 +28,7 @@ module Happy
 
       it "uses the layout provided through the :layout option" do
         instance = Controller.new
-        instance.send(:context).should_receive(:render).with('layout.erb')
+        instance.should_receive(:render).with('layout.erb')
 
         catch(:done) { instance.serve! "content", :layout => 'layout.erb' }
       end
@@ -138,12 +138,12 @@ module Happy
 
     describe '#header' do
       it "sets the specified header in the response" do
-        subject.send(:context).response.should_receive(:[]=).with('Content-type', 'text/css')
+        subject.send(:response).should_receive(:[]=).with('Content-type', 'text/css')
         subject.header 'Content-type', 'text/css'
       end
 
       it "also accepts the header name as a symbol" do
-        subject.send(:context).response.should_receive(:[]=).with('Content-type', 'text/css')
+        subject.send(:response).should_receive(:[]=).with('Content-type', 'text/css')
         subject.header :content_type, 'text/css'
       end
     end
@@ -157,7 +157,7 @@ module Happy
 
     describe '#layout' do
       it "sets the layout to be used by the current context" do
-        subject.send(:context).should_receive(:layout=).with('layout.erb')
+        subject.send(:response).should_receive(:layout=).with('layout.erb')
         subject.layout 'layout.erb'
       end
     end

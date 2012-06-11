@@ -8,7 +8,7 @@ module Happy
 
           # Mix in default options
           options = {
-            :layout => context.layout
+            :layout => response.layout
           }.merge(options)
 
           # Add status code from options
@@ -31,9 +31,9 @@ module Happy
         end
       end
 
-      def halt!(message = :done)
+      def halt!(message = :done, what = nil)
         only_if_path_matches do
-          throw message
+          throw message, what || response
         end
       end
 
@@ -46,7 +46,7 @@ module Happy
       end
 
       def layout(name)
-        context.layout = name
+        response.layout = name
       end
 
       def content_type(type)
@@ -79,11 +79,10 @@ module Happy
       def run(thing, options = {}, &blk)
         if thing.is_a?(Class) && thing.ancestors.include?(Happy::Controller)
           # Happy controllers!
-          thing.new(env, options, &blk).perform
+          thing.new(self, options, &blk).route
         elsif thing.respond_to?(:call)
           # Rack apps!
-          context.response = thing.call(request.env)
-          throw :done
+          throw :done, thing.call(request.env)
         elsif thing.respond_to?(:to_s)
           thing.to_s
         else
@@ -99,7 +98,7 @@ module Happy
       # is not the path the user requested.)
       #
       def only_if_path_matches
-        yield if remaining_path.empty?
+        yield if request.remaining_path.empty?
       end
     end
   end

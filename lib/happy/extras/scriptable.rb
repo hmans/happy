@@ -4,7 +4,6 @@ module Happy
   module Extras
     class Scriptable < Happy::Controller
       def route
-        Happy::Context.class_eval(load_script 'context.rb')
         run_script 'permissions.rb'
         run_script 'route.rb'
       end

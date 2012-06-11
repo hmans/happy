@@ -1,5 +1,3 @@
-require 'happy/extras/permissions'
-
 module Happy
   module Extras
     module Resources
@@ -31,19 +29,19 @@ module Happy
         end
 
         def set_plural_variable(v)
-          context.instance_variable_set "@#{options[:plural_name]}", v
+          instance_variable_set "@#{options[:plural_name]}", v
         end
 
         def plural_variable
-          context.instance_variable_get "@#{options[:plural_name]}"
+          instance_variable_get "@#{options[:plural_name]}"
         end
 
         def set_singular_variable(v)
-          context.instance_variable_set "@#{options[:singular_name]}", v
+          instance_variable_set "@#{options[:singular_name]}", v
         end
 
         def singular_variable
-          context.instance_variable_get "@#{options[:singular_name]}"
+          instance_variable_get "@#{options[:singular_name]}"
         end
 
         def do_index
