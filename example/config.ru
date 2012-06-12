@@ -5,38 +5,26 @@ require 'happy'
 require 'cgi'
 
 class TestApp < Happy::Controller
+  def examples; @examples ||= {}; end
+
   def example(name, path_name = nil, &blk)
     path_name ||= name.parameterize
     examples[name] = path_name
+
+    # Create a path containing the example's code block
     path(path_name, &blk)
   end
 
-  def examples
-    @examples ||= {}
-  end
-
   def route
-    # set up permissions ;-)
-    can.dance!
-
-    example 'Invoking other controllers' do
-      # creata new controller on the fly
-      c = Happy.route do
-        "Controller wrapping works, yay!"
-      end
-
-      # pass control over the request to that controller
-      run c
+    example 'Returning just a string' do
+      "I'm just a string!"
     end
 
-    example 'Errors' do
-      null = Happy::Controller.new
-
-      # Trigger an error
-      null.foobar
+    example 'Explicit responses' do
+      serve! "I was served through #serve!"
     end
 
-    example 'Path part parameters' do
+    example 'Path parameters' do
       path 'hello' do
         path :name do
           "Hello, #{params['name']}!"
@@ -46,7 +34,18 @@ class TestApp < Happy::Controller
       "Try #{link_to 'this', current_url('hello', 'hendrik')}!"
     end
 
+    example 'Inline path parameters' do
+      path 'hello-:name' do
+        "Hello, #{params['name']}!"
+      end
+
+      "Try #{link_to 'this', current_url('hello-hendrik')}!"
+    end
+
     example 'Permissions' do
+      # set up permissions ;-)
+      can.dance!
+
       path 'dance' do
         if can.dance?
           "You can dance."
@@ -73,8 +72,29 @@ class TestApp < Happy::Controller
       "This should render without a layout."
     end
 
-    example 'Returning just a string', 'returning-string' do
-      "I'm just a string!"
+    example 'Invoking other controllers' do
+      # creata new controller on the fly
+      c = Happy.route do
+        "Controller wrapping works, yay!"
+      end
+
+      # pass control over the request to that controller
+      run c
+    end
+
+    example 'Invoking Rack apps' do
+      # define a Rack app
+      rackapp = lambda { |env| [200, {'Content-type' => 'text/html'}, ["It works!"]] }
+
+      # pass control over the request to the Rack application
+      run rackapp
+    end
+
+    example 'Errors' do
+      null = Happy::Controller.new
+
+      # Trigger an error. This should display a nice error page.
+      null.foobar
     end
 
     render 'index.erb'
