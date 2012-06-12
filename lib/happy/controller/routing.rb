@@ -16,13 +16,13 @@ module Happy
           if name.present?
             # convert symbols to ":foo" type string
             name = ":#{name}" if name.is_a?(Symbol)
-            path_match = path_to_regexp(name).match(remaining_path.first)
+            path_match = path_to_regexp(name).match(unprocessed_path.first)
           end
 
           # Match the request method, if specified
           method_matched = [nil, request.request_method.downcase.to_sym].include?(options[:method])
 
-          path_matched   = (path_match || (name.nil? && remaining_path.empty?))
+          path_matched   = (path_match || (name.nil? && unprocessed_path.empty?))
 
           # Only do something here if method and requested path both match
           if path_matched && method_matched
@@ -31,7 +31,7 @@ module Happy
               name.scan(/:(\w+)/).flatten.each do |var|
                 request.params[var] = path_match.captures.shift
               end
-              previous_path << remaining_path.shift
+              processed_path << unprocessed_path.shift
             end
 
             serve!(instance_exec(&blk)) or raise Errors::NotFound

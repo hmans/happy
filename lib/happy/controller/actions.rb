@@ -98,7 +98,7 @@ module Happy
       # is not the path the user requested.)
       #
       def only_if_path_matches
-        yield if remaining_path.empty?
+        yield if unprocessed_path.empty?
       end
     end
   end
