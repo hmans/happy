@@ -24,7 +24,7 @@ module Happy
     include Permissions
     include Helpers
 
-    attr_reader :options, :env
+    attr_reader :options, :env, :remaining_path, :previous_path
 
     # Creates a new instance of {Controller}. When a block is provided,
     # it is run against the new instance, allowing custom controller classes
@@ -39,14 +39,18 @@ module Happy
       if env_or_parent.is_a?(Happy::Controller)
         @parent_controller = env_or_parent
         @env = @parent_controller.env
+        @remaining_path = env_or_parent.remaining_path
+        @previous_path = env_or_parent.previous_path
       else
         @env = env_or_parent
+        @remaining_path = request.path.split('/').reject {|s| s.blank? }
+        @previous_path  = []
       end
 
       @options = options
 
       # Save a copy of the current path as this controller's root path.
-      @root_url = request.previous_path.join('/')
+      @root_url = previous_path.join('/')
 
       # Execute block against this instance, allowing the controller to
       # provide a DSL for configuration.
@@ -70,7 +74,7 @@ module Happy
   private
 
     def url(extras = nil)
-      url_for(request.previous_path, extras)
+      url_for(previous_path, extras)
     end
 
     def route
