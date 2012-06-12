@@ -22,6 +22,7 @@ class TestApp < Happy::Controller
 
     example 'Explicit responses' do
       serve! "I was served through #serve!"
+      serve! "I'm not being served, since the above call to #serve! halted processing."
     end
 
     example 'Path parameters' do
