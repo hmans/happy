@@ -14,9 +14,7 @@ Happy is available as a RubyGem, so just install it through `gem install happy` 
 
 
 
-# Tutorial
-
-## Chapter 1: The Basics
+## Tutorial: The Basics
 
 ### Hello world
 
@@ -32,7 +30,7 @@ TODO
 
 
 
-## Chapter 2: Working with Controllers
+## Tutorial: Working with Controllers
 
 ### Invoking another controller
 
