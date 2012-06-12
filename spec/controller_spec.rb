@@ -18,19 +18,19 @@ module Happy
       last_response.body.should == 'it works'
     end
 
-    describe '#url' do
+    describe '#current_url' do
       it "returns the current URL" do
         def app
           build_controller do
             path 'foo' do
               path 'bar' do
-                "My URL is #{url}"
+                "My URL is #{current_url}"
               end
 
-              "My URL is #{url}"
+              "My URL is #{current_url}"
             end
 
-            "My URL is #{url}"
+            "My URL is #{current_url}"
           end
         end
 
@@ -43,7 +43,7 @@ module Happy
         def app
           build_controller do
             path 'foo' do
-              url('bar')
+              current_url('bar')
             end
           end
         end

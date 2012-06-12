@@ -67,13 +67,13 @@ module Happy
 
   protected
 
-    def root_url(extras = nil)
+    def root_url(*extras)
       url_for(@root_url, extras)
     end
 
   private
 
-    def url(extras = nil)
+    def current_url(*extras)
       url_for(previous_path, extras)
     end
 
