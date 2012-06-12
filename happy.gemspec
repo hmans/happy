@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'happy-helpers', '~> 0.1.0.pre11'
   gem.add_dependency 'allowance', '>= 0.1.1'
 
-  gem.add_dependency 'happy-cli', '>= 0.1.0.pre1'
+  # gem.add_dependency 'happy-cli', '>= 0.1.0.pre1'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 2.8'
