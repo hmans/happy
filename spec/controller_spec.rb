@@ -43,12 +43,12 @@ module Happy
         def app
           build_controller do
             path 'foo' do
-              current_url('bar')
+              current_url('bar', 'moo')
             end
           end
         end
 
-        response_for { get '/foo' }.body.should == "/foo/bar"
+        response_for { get '/foo' }.body.should == "/foo/bar/moo"
       end
     end
 
