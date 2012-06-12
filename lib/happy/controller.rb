@@ -26,6 +26,8 @@ module Happy
 
     attr_reader :env
 
+    CASCADING_OPTIONS = [:views]
+
     # Creates a new instance of {Controller}. When a block is provided,
     # it is run against the new instance, allowing custom controller classes
     # to provide DSL-like configuration.
@@ -35,7 +37,7 @@ module Happy
     # @param options [Hash]
     #   Controller options.
     #
-    def initialize(env_or_parent = {}, options = {}, &blk)
+    def initialize(env_or_parent = {}, opts = {}, &blk)
       if env_or_parent.is_a?(Happy::Controller)
         @parent_controller = env_or_parent
         @env = @parent_controller.env
@@ -47,7 +49,15 @@ module Happy
         @processed_path  = []
       end
 
-      self.options.merge(options)
+      # Augment this instance's options hash with the options given to this constructor
+      options.merge(opts)
+
+      # Copy missing options from our parent
+      if @parent_controller
+        CASCADING_OPTIONS.each do |opt|
+          options[opt] ||= @parent_controller.options[opt]
+        end
+      end
 
       # Save a copy of the current path as this controller's root path.
       @root_url = processed_path.join('/')

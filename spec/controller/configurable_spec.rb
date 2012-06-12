@@ -32,5 +32,21 @@ module Happy
         TestController.new.options[:foo].should == 'bar'
       end
     end
+
+    describe 'cascading options' do
+      class OuterController < Controller
+        set :views, './foo/'
+        set :foo, 'bar'
+      end
+
+      class InnerController < Controller
+      end
+
+      it "are copied from the parent controller if necessary" do
+        @instance = InnerController.new(OuterController.new)
+        @instance.options[:views].should == './foo/'
+        @instance.options[:foo].should be_nil
+      end
+    end
   end
 end
