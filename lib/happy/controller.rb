@@ -24,7 +24,7 @@ module Happy
     include Permissions
     include Helpers
 
-    attr_reader :env, :unprocessed_path, :processed_path
+    attr_reader :env
 
     # Creates a new instance of {Controller}. When a block is provided,
     # it is run against the new instance, allowing custom controller classes
@@ -66,6 +66,8 @@ module Happy
     end
 
   protected
+
+    attr_reader :unprocessed_path, :processed_path
 
     def root_url(*extras)
       url_for(@root_url, extras)
