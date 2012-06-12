@@ -92,10 +92,8 @@ module Happy
         end
 
         def route
-          @options = {
-            :singular_name => options[:class].to_s.tableize.singularize,
-            :plural_name   => options[:class].to_s.tableize.pluralize
-          }.merge(@options)
+          options[:singular_name] ||= options[:class].to_s.tableize.singularize
+          options[:plural_name]   ||= options[:class].to_s.tableize.pluralize
 
           path options[:plural_name] do
             get('new') { do_new }
