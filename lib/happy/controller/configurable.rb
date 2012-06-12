@@ -3,17 +3,21 @@ module Happy
     module Configurable
       extend ActiveSupport::Concern
 
-      def config
-        self.class.config
+      def options
+        @options ||= self.class.options.dup
+      end
+
+      def set(k, v)
+        options[k.to_sym] = v
       end
 
       module ClassMethods
-        def config
-          @config ||= {}
+        def options
+          @options ||= {}
         end
 
         def set(k, v)
-          config[k.to_sym] = v
+          options[k.to_sym] = v
         end
       end
     end

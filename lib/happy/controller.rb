@@ -24,7 +24,7 @@ module Happy
     include Permissions
     include Helpers
 
-    attr_reader :options, :env, :unprocessed_path, :processed_path
+    attr_reader :env, :unprocessed_path, :processed_path
 
     # Creates a new instance of {Controller}. When a block is provided,
     # it is run against the new instance, allowing custom controller classes
@@ -47,7 +47,7 @@ module Happy
         @processed_path  = []
       end
 
-      @options = options
+      self.options.merge(options)
 
       # Save a copy of the current path as this controller's root path.
       @root_url = processed_path.join('/')
