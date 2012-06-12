@@ -50,7 +50,7 @@ module Happy
       end
 
       # Augment this instance's options hash with the options given to this constructor
-      options.merge(opts)
+      options.merge!(opts)
 
       # Copy missing options from our parent
       if @parent_controller

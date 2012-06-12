@@ -48,5 +48,12 @@ module Happy
         @instance.options[:foo].should be_nil
       end
     end
+
+    describe 'options passed to the initializer' do
+      it "override default options" do
+        @instance = TestController.new({}, :foo => 'baz')
+        @instance.options[:foo].should == 'baz'
+      end
+    end
   end
 end
