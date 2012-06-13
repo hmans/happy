@@ -24,7 +24,7 @@ module Happy
 
       module ClassMethods
         def call(env)
-          new(env).handle_request
+          new(env).handle_request.to_a
         end
       end
     end
