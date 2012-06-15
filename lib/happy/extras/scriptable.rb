@@ -1,5 +1,3 @@
-require 'happy/extras/permissions'
-
 module Happy
   module Extras
     class Scriptable < Happy::Controller
