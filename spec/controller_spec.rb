@@ -22,8 +22,8 @@ module Happy
       it "returns the current URL" do
         def app
           build_controller do
-            path? 'foo' do
-              path? 'bar' do
+            path 'foo' do
+              path 'bar' do
                 "My URL is #{current_url}"
               end
 
@@ -42,7 +42,7 @@ module Happy
       it "appends extra paths to the URL if provided" do
         def app
           build_controller do
-            path? 'foo' do
+            path 'foo' do
               current_url('bar', 'moo')
             end
           end
@@ -56,7 +56,7 @@ module Happy
       it "returns the controller's root URL" do
         def app
           root_url_printer = build_controller do
-            path? 'bar' do
+            path 'bar' do
               "My root URL is still #{root_url}"
             end
 
@@ -64,7 +64,7 @@ module Happy
           end
 
           build_controller do
-            path? 'foo' do
+            path 'foo' do
               run root_url_printer
             end
 
@@ -84,7 +84,7 @@ module Happy
           end
 
           build_controller do
-            path? 'foo' do
+            path 'foo' do
               run some_controller
             end
           end

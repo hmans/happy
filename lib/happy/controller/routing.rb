@@ -7,7 +7,7 @@ module Happy
         Regexp.compile('^'+path.gsub(/\)/, ')?').gsub(/\//, '\/').gsub(/\./, '\.').gsub(/:(\w+)/, '(.+)')+'$')
       end
 
-      def path?(*args, &blk)
+      def path(*args, &blk)
         options = (args.pop if args.last.is_a?(Hash)) || {}
         args = [nil] if args.empty?
 
@@ -40,9 +40,9 @@ module Happy
       end
 
       [:get, :post, :put, :delete].each do |method|
-        define_method("#{method}?") do |*args, &blk|
+        define_method(method) do |*args, &blk|
           args.last.is_a?(Hash) ? args.last.merge(:method => method) : args.push(:method => method)
-          path?(*args, &blk)
+          path(*args, &blk)
         end
       end
     end
