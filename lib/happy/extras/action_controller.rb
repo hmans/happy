@@ -13,8 +13,16 @@ module Happy
     # /foo/123  # foo (with params['id'] set to 123)
     #
     class ActionController < Happy::Controller
+
+      protected
+
       def dispatch_to_method(name)
-        send(name) if public_methods.include?(name.to_sym)
+        # Only dispatch to public methods
+        if public_methods.include?(name.to_sym)
+          send name
+        else
+          raise Errors::NotFound
+        end
       end
 
       def route
