@@ -1,10 +1,8 @@
 module Happy
   module Extras
     module Resources
-      module ControllerExtensions
-        def resource(klass, options = {}, &blk)
-          run ResourceMounter, options.merge(:class => klass), &blk
-        end
+      def resource(klass, options = {}, &blk)
+        run ResourceMounter, options.merge(:class => klass), &blk
       end
 
       class ResourceMounter < Happy::Controller
@@ -112,5 +110,3 @@ module Happy
     end
   end
 end
-
-Happy::Controller.send(:include, Happy::Extras::Resources::ControllerExtensions)
