@@ -6,7 +6,7 @@ module Happy
 
     describe '#serve!' do
       def app
-        build_controller do
+        Happy.route do
           on('simple') { serve! "Simple response" }
           on('with_headers') { serve! "body { color: red }", :content_type => 'text/css' }
           on('with_status')  { serve! "Not Allowed", :status => 401 }
@@ -58,7 +58,7 @@ module Happy
     describe '#redirect!' do
       it "triggers a redirection to the specified URL" do
         def app
-          build_controller { redirect! 'http://www.test.com' }
+          Happy.route { redirect! 'http://www.test.com' }
         end
 
         get '/'
@@ -68,7 +68,7 @@ module Happy
 
       it "sets the provided status code" do
         def app
-          build_controller { redirect! 'http://www.test.com', 301 }
+          Happy.route { redirect! 'http://www.test.com', 301 }
         end
 
         get '/'
@@ -101,7 +101,7 @@ module Happy
         end
 
         def app
-          build_controller { run InnerController }
+          Happy.route { run InnerController }
         end
 
         response_for { get '/' }.body.should == 'awesome!'
@@ -115,7 +115,7 @@ module Happy
         end
 
         def app
-          build_controller { run SomeRackApp }
+          Happy.route { run SomeRackApp }
         end
 
         response_for { get '/' }.body.should == 'racksome!'
@@ -129,7 +129,7 @@ module Happy
         end
 
         def app
-          build_controller { run SomeClass }
+          Happy.route { run SomeClass }
         end
 
         response_for { get '/' }.body.should == 'stringsome!'
