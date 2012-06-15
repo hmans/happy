@@ -4,6 +4,7 @@ lib_path = File.expand_path("#{File.dirname(__FILE__)}/../lib")
 $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
 
 require 'happy'
+require 'happy/extras/action_controller'
 
 # Controllers are the core building blocks of Happy applications.
 # They're also just Rack apps, so in any Happy app, you will
@@ -110,6 +111,10 @@ class TestApp < Happy::Controller
       null.foobar
     end
 
+    example 'ActionController' do
+      run ActionTest
+    end
+
     render 'index.erb'
   end
 
@@ -121,6 +126,29 @@ class TestApp < Happy::Controller
 
     # Create a path containing the example's code block
     on path_name, &blk
+  end
+end
+
+class ActionTest < Happy::Extras::ActionController
+  def foo
+    if params['id']
+      "You called foo with ID #{params['id']}!"
+    else
+      "You called foo without an ID."
+    end
+  end
+
+  def bar
+    "The bar is open!"
+  end
+
+  def index
+    %{
+      This is the index method.
+      Try #{link_to 'foo', current_url('foo')}
+      (#{link_to 'with an ID', current_url('foo', '123')})
+      or #{link_to 'bar', current_url('bar')}!
+    }
   end
 end
 
