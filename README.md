@@ -12,47 +12,19 @@ Furthermore, the way Happy handles incoming requests is vastly different from ho
 
 Happy is available as a RubyGem, so just install it through `gem install happy` (or add it to your project's `Gemfile`. You know the drill.)
 
+## Usage
 
+* The Happy Book of Happy (work in progress)
+* [Reference Documentation](http://rdoc.info/github/hmans/happy/master/)
 
-## Tutorial: The Basics
+## Reporting Bugs & Contributing
 
-### Hello world
+* [Issues on Github](https://github.com/hmans/happy/issues)
 
-TODO
+I am trying to keep Happy's code base as sane (and small) as possible. If you
+want to contribute code, _please_ talk to me _before_ writing a patch or submitting
+a pull request! Thank you.
 
-### Dealing with paths
+## Authors & Contributors
 
-TODO
-
-### Rendering templates
-
-TODO
-
-
-
-## Tutorial: Working with Controllers
-
-### Invoking another controller
-
-TODO
-
-### Setting controller options
-
-TODO
-
-
-
-
-
-# Additional Information
-
-## Current Status
-
-Happy is being extracted from a web application that I've been working on. I'm trying to get a first, hopefully somewhat stable release out of the door some time during June 2012.
-
-FWIW, here's a list of important things still missing right now:
-
-* Better logging.
-* Improved view engine compatibility.
-
-Hendrik Mans, hendrik@mans.de
+* [Hendrik Mans](mailto:hendrik@mans.de)
