@@ -79,10 +79,10 @@ class TestApp < Happy::Controller
           "This should render without a layout."
         end
 
-        "This should render with a layout."
+        "This should render with a layout. But #{link_to 'this', current_url('changed-my-mind')} shouldn't!"
       end
 
-      "This should render without a layout."
+      "This should render without a layout. But #{link_to 'this', current_url('with-layout')} should."
     end
 
     example 'Invoking other controllers' do
