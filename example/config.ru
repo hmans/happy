@@ -5,6 +5,7 @@ $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
 
 require 'happy'
 require 'happy/extras/action_controller'
+require 'happy/extras/resource_controller'
 
 # Controllers are the core building blocks of Happy applications.
 # They're also just Rack apps, so in any Happy app, you will
@@ -115,6 +116,10 @@ class TestApp < Happy::Controller
       run ActionTest
     end
 
+    example 'ResourceController' do
+      run ResourceTest
+    end
+
     render 'index.erb'
   end
 
@@ -149,6 +154,14 @@ class ActionTest < Happy::Extras::ActionController
       (#{link_to 'with an ID', current_url('foo', '123')})
       or #{link_to 'bar', current_url('bar')}!
     }
+  end
+end
+
+class ResourceTest < Happy::Extras::ResourceController
+  %w{index show new create edit update destroy}.each do |action|
+    define_method action do
+      "You called #{action}!"
+    end
   end
 end
 
