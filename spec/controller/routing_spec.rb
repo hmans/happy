@@ -5,17 +5,17 @@ module Happy
     describe '#path' do
       subject do
         Happy.route do
-          path('foo') { serve! 'bar' }
-          path('one', 'two') { serve! 'onetwo' }
-          path('hello') do
-            path(:name) { serve! "Hello #{params['name']}" }
+          on('foo') { serve! 'bar' }
+          on('one', 'two') { serve! 'onetwo' }
+          on('hello') do
+            on(:name) { serve! "Hello #{params['name']}" }
             serve! "Please provide a name."
           end
-          path('number-:num') { serve! "num = #{params['num']}" }
-          path('return-value') { 'moo?' }
-          path('resource') do
-            get { 'GET resource' }
-            post { 'POST resource' }
+          on('number-:num') { serve! "num = #{params['num']}" }
+          on('return-value') { 'moo?' }
+          on('resource') do
+            on_get { 'GET resource' }
+            on_post { 'POST resource' }
           end
           serve! "root"
         end
@@ -62,12 +62,14 @@ module Happy
     end
 
     %w(get post put delete).each do |what|
-      describe "##{what}" do
+      method_name = "on_%s" % what
+
+      describe "#%s" % method_name do
         subject { Controller.new }
 
         it "merely invokes #path with the :method => :#{what} option" do
-          subject.should_receive(:path).with('path', :method => what.to_sym)
-          subject.send(what, 'path')
+          subject.should_receive(:on).with('path', :method => what.to_sym)
+          subject.send(method_name, 'path')
         end
       end
     end

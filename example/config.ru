@@ -38,8 +38,8 @@ class TestApp < Happy::Controller
     end
 
     example 'Path parameters' do
-      path 'hello' do
-        path :name do
+      on 'hello' do
+        on :name do
           "Hello, #{params['name']}!"
         end
       end
@@ -48,7 +48,7 @@ class TestApp < Happy::Controller
     end
 
     example 'Inline path parameters' do
-      path 'hello-:name' do
+      on 'hello-:name' do
         "Hello, #{params['name']}!"
       end
 
@@ -59,7 +59,7 @@ class TestApp < Happy::Controller
       # set up permissions ;-)
       can.dance!
 
-      path 'dance' do
+      on 'dance' do
         if can.dance?
           "You can dance."
         else
@@ -71,10 +71,10 @@ class TestApp < Happy::Controller
     end
 
     example 'Layouts' do
-      path 'with-layout' do
+      on 'with-layout' do
         layout 'layout.erb'
 
-        path 'changed-my-mind' do
+        on 'changed-my-mind' do
           layout false
           "This should render without a layout."
         end
@@ -120,7 +120,7 @@ class TestApp < Happy::Controller
     examples[name] = path_name
 
     # Create a path containing the example's code block
-    path(path_name, &blk)
+    on path_name, &blk
   end
 end
 

@@ -7,11 +7,11 @@ module Happy
       it "passes on all method calls to a parent if there is one" do
         class Inner < Controller
           def route
-            path 'one' do
+            on 'one' do
               some_helper
             end
 
-            path 'two' do
+            on 'two' do
               some_unknown_helper
             end
           end

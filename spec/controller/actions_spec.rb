@@ -7,10 +7,10 @@ module Happy
     describe '#serve!' do
       def app
         build_controller do
-          path('simple') { serve! "Simple response" }
-          path('with_headers') { serve! "body { color: red }", :content_type => 'text/css' }
-          path('with_status')  { serve! "Not Allowed", :status => 401 }
-          path('with_layout')  { serve! "content", :layout => 'layout.erb' }
+          on('simple') { serve! "Simple response" }
+          on('with_headers') { serve! "body { color: red }", :content_type => 'text/css' }
+          on('with_status')  { serve! "Not Allowed", :status => 401 }
+          on('with_layout')  { serve! "content", :layout => 'layout.erb' }
         end
       end
 
@@ -45,7 +45,7 @@ module Happy
         def app
           Happy.route do
             serve! "This should not render"
-            path 'test' do
+            on 'test' do
               serve! "But this should render"
             end
           end
@@ -80,7 +80,7 @@ module Happy
           Happy.route do
             redirect! "http://mans.de"
 
-            path 'test' do
+            on 'test' do
               redirect! "http://schnitzelpress.org"
             end
           end
