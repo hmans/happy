@@ -95,17 +95,17 @@ module Happy
           options[:singular_name] ||= options[:class].to_s.tableize.singularize
           options[:plural_name]   ||= options[:class].to_s.tableize.pluralize
 
-          path options[:plural_name] do
-            get('new') { do_new }
+          on options[:plural_name] do
+            on_get('new') { do_new }
 
-            path :id do
-              get         { do_show }
-              post        { do_update }
-              get('edit') { do_edit }
+            on :id do
+              on_get         { do_show }
+              on_post        { do_update }
+              on_get('edit') { do_edit }
             end
 
-            post { do_create }
-            get  { do_index }
+            on_post { do_create }
+            on_get  { do_index }
           end
         end
       end
