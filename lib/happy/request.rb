@@ -7,6 +7,16 @@ module Happy
   #
   class Request < Rack::Request
 
+    # Override the default #params method so it returns a Hash with indifferent
+    # access if ActiveSupport is available.
+    def params
+      @env['happy.params'] ||= if defined?(HashWithIndifferentAccess)
+        super.with_indifferent_access
+      else
+        super
+      end
+    end
+
   protected
 
     def parse_query(qs)
