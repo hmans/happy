@@ -25,7 +25,16 @@ module Happy
       #
       def render_template(name, variables = {}, &blk)
         path = options[:views] || './views'
-        HappyHelpers::Templates.render(File.join(path, name), self, variables, &blk)
+        full_name = File.expand_path(File.join(path, name))
+
+        # load and cache template
+        @@cached_templates ||= {}
+        t = @@cached_templates[full_name] =
+          (Happy.env.production? && @@cached_templates[full_name]) ||
+          Tilt.new(full_name, :default_encoding => 'utf-8')
+
+        # render template
+        t.render(self, variables, &blk)
       end
 
       # Render a resource.
