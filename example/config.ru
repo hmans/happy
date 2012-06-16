@@ -24,6 +24,8 @@ class TestApp < Happy::Controller
   # method, that does the same thing but also records the example in a hash
   # so we can generated a "table of contents" in index.erb.
 
+  set :views, File.expand_path("#{File.dirname(__FILE__)}/views")
+
   def route
     example 'Returning just a string' do
       "I'm just a string!"
