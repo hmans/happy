@@ -27,4 +27,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec-html-matchers'
   gem.add_development_dependency 'rack-test'
   gem.add_development_dependency 'watchr'
+  gem.add_development_dependency 'debugger'
 end
