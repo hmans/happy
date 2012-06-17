@@ -31,8 +31,8 @@ module Happy
     # it is run against the new instance, allowing custom controller classes
     # to provide DSL-like configuration.
     #
-    # @param env [Hash]
-    #   Rack environment hash.
+    # @param env_or_parent [Hash,Controller]
+    #   Rack environment hash _or_ parent controller.
     # @param opts [Hash]
     #   Options to be merged with the controller's default (class-level) settings.
     #

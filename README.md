@@ -14,7 +14,7 @@ Happy is available as a RubyGem, so just install it through `gem install happy` 
 
 ## Usage
 
-* The Happy Book of Happy (work in progress)
+* {file:TUTORIAL.md The Happy Book of Happy}
 * [Reference Documentation](http://rdoc.info/github/hmans/happy/master/)
 
 ## Reporting Bugs & Contributing

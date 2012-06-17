@@ -5,10 +5,10 @@ module Happy
 
     # Render a HTML page for the given exception.
     #
-    # @param [Exception] exception
+    # @param exception [Exception]
     #   The exception to display.
-    # @param [Hash] env
-    #   The current Rack environment hash (used to display information on request parameters, session contents and such.)
+    # @param controller [Hash]
+    #   The Happy Controller that caught the exception.
     #
     # @option options [String] :title
     #   Title of error page
