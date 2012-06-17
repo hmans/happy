@@ -1,12 +1,10 @@
-# SMELL: really?
-require 'happy-helpers/utils/date_parameter_converter'
+require 'happy/request/date_parameter_converter'
 
 module Happy
   # Happy's own little request class. It extends {Rack::Request} with
   # a bit of convenience functionality.
   #
   class Request < Rack::Request
-
     # Override the default #params method so it returns a Hash with indifferent
     # access if ActiveSupport is available.
     def params
@@ -21,7 +19,7 @@ module Happy
 
     def parse_query(qs)
       super(qs).tap do |p|
-        HappyHelpers::Utils::DateParameterConverter.convert!(p)
+        DateParameterConverter.convert!(p)
       end
     end
   end

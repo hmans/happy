@@ -1,6 +1,14 @@
 require 'rack'
+
+# Happy is currently making use of ActiveSupport. I'm not 100% happy
+# about this dependency and will eventually try to remove it.
+# The following line should at least make sure that the individual
+# components are autoloaded as needed.
+require 'active_support'
+
 require 'happy/version'
 require 'happy/errors'
+require 'happy/helpers'
 require 'happy/controller'
 
 module Happy

@@ -1,7 +1,6 @@
 require 'happy/request'
 require 'happy/response'
 
-require 'happy/controller/helpers'
 require 'happy/controller/routing'
 require 'happy/controller/actions'
 require 'happy/controller/rackable'
@@ -22,7 +21,7 @@ module Happy
     include Configurable
     include Cascadable
     include Permissions
-    include Helpers
+    include Happy::Helpers
 
     attr_reader :env
 

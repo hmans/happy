@@ -1,13 +1,9 @@
-require 'happy-helpers'
+require 'tilt'
 
 module Happy
-  class Controller
-    # A collection of useful helper methods.
-    #
-    module Helpers
-      # Load a whole bunch of helpers fromi HappyHelpers. This includes stuff
-      # like url_for, link_to and more.
-      include HappyHelpers::Helpers
+  module Helpers
+    module Rendering
+      attr_accessor :output_buffer
 
       # Renders "something". This method takes a closer look at what this
       # "something" is and then dispatches to a more specific method.
@@ -31,7 +27,7 @@ module Happy
         @@cached_templates ||= {}
         t = @@cached_templates[full_name] =
           (Happy.env.production? && @@cached_templates[full_name]) ||
-          Tilt.new(full_name, :default_encoding => 'utf-8')
+          Tilt.new(full_name, :default_encoding => 'utf-8', :outvar => "@output_buffer")
 
         # render template
         t.render(self, variables, &blk)
@@ -53,9 +49,41 @@ module Happy
         render_template("#{plural_name}/_#{singular_name}.html.haml", options)
       end
 
-      alias_method :h, :escape_html
-      alias_method :l, :localize
-      alias_method :t, :translate
+
+      # Capture a block from a template. Use this inside view helpers that
+      # take blocks.
+      #
+      def capture_template_block(*args, &blk)
+        if respond_to?(:is_haml?) && is_haml?
+          capture_haml(*args, &blk)
+        else
+          with_output_buffer(&blk)
+        end
+      end
+
+      # Add something to the output being rendered by the current template.
+      # Use this inside view helpers that take blocks.
+      #
+      def concat_output(v)
+        if respond_to?(:is_haml?) && is_haml?
+          v
+        else
+          self.output_buffer << v
+        end
+      end
+
+      # Execute the given block, adding its generated output to a new view
+      # buffer, and finally returning that buffer. Use this inside view helpers
+      # that take blocks.
+      #
+      def with_output_buffer
+        self.output_buffer, old_buffer = "", self.output_buffer
+        yield if block_given?
+        output_buffer
+      ensure
+        self.output_buffer = old_buffer
+      end
+
     end
   end
 end

@@ -7,6 +7,8 @@ require 'happy'
 require 'happy/extras/action_controller'
 require 'happy/extras/resource_controller'
 
+require 'haml'
+
 # Controllers are the core building blocks of Happy applications.
 # They're also just Rack apps, so in any Happy app, you will
 # declare at least a "root" controller class and run that through Rack.
@@ -122,7 +124,16 @@ class TestApp < Happy::Controller
       run ResourceTest
     end
 
+    example "Block Helpers" do
+      on('erb')  { render 'block_helpers.erb' }
+      on('haml') { render 'block_helpers.haml' }
+    end
+
     render 'index.erb'
+  end
+
+  def blockquotify(&blk)
+    concat_output html_tag(:blockquote) { capture_template_block(&blk) }
   end
 
   def examples; @examples ||= {}; end
