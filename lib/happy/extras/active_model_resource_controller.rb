@@ -5,39 +5,39 @@ module Happy
 
     class ActiveModelResourceController < Happy::Extras::ResourceController
       def root_url
-        super(options[:plural_name])
+        super(settings[:plural_name])
       end
 
       def render_resource_template(name)
-        render "#{options[:plural_name]}/#{name}.html.haml"
+        render "#{settings[:plural_name]}/#{name}.html.haml"
       end
 
       def resource
-        options[:class]
+        settings[:class]
       end
 
       def resource_with_permission_scope(*args)
-        permissions.scoped_model(*args, options[:class])
+        permissions.scoped_model(*args, settings[:class])
       end
 
       def require_permission!(*args)
-        raise "not allowed" unless permissions.can?(*args, options[:class])
+        raise "not allowed" unless permissions.can?(*args, settings[:class])
       end
 
       def set_plural_variable(v)
-        instance_variable_set "@#{options[:plural_name]}", v
+        instance_variable_set "@#{settings[:plural_name]}", v
       end
 
       def plural_variable
-        instance_variable_get "@#{options[:plural_name]}"
+        instance_variable_get "@#{settings[:plural_name]}"
       end
 
       def set_singular_variable(v)
-        instance_variable_set "@#{options[:singular_name]}", v
+        instance_variable_set "@#{settings[:singular_name]}", v
       end
 
       def singular_variable
-        instance_variable_get "@#{options[:singular_name]}"
+        instance_variable_get "@#{settings[:singular_name]}"
       end
 
       def index
@@ -54,13 +54,13 @@ module Happy
 
       def new
         require_permission! :new
-        set_singular_variable resource_with_permission_scope(:new).new(params[options[:singular_name]], :as => options[:role])
+        set_singular_variable resource_with_permission_scope(:new).new(params[settings[:singular_name]], :as => settings[:role])
         render_resource_template 'new'
       end
 
       def create
         require_permission! :create
-        set_singular_variable resource_with_permission_scope(:create).new(params[options[:singular_name]], :as => options[:role])
+        set_singular_variable resource_with_permission_scope(:create).new(params[settings[:singular_name]], :as => settings[:role])
 
         if singular_variable.save
           redirect! singular_variable
@@ -78,7 +78,7 @@ module Happy
       def update
         require_permission! :update
         set_singular_variable resource_with_permission_scope(:update).find(params['id'])
-        singular_variable.assign_attributes params[options[:singular_name]], :as => options[:role]
+        singular_variable.assign_attributes params[settings[:singular_name]], :as => settings[:role]
 
         if singular_variable.save
           redirect! singular_variable
@@ -88,8 +88,8 @@ module Happy
       end
 
       def route
-        options[:singular_name] ||= options[:class].to_s.tableize.singularize
-        options[:plural_name]   ||= options[:class].to_s.tableize.pluralize
+        settings[:singular_name] ||= settings[:class].to_s.tableize.singularize
+        settings[:plural_name]   ||= settings[:class].to_s.tableize.pluralize
 
         super
       end

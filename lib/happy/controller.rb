@@ -25,7 +25,7 @@ module Happy
 
     attr_reader :env
 
-    CASCADING_OPTIONS = [:views]
+    CASCADING_SETTINGS = [:views]
 
     # Creates a new instance of {Controller}. When a block is provided,
     # it is run against the new instance, allowing custom controller classes
@@ -33,8 +33,8 @@ module Happy
     #
     # @param env [Hash]
     #   Rack environment hash.
-    # @param options [Hash]
-    #   Controller options.
+    # @param opts [Hash]
+    #   Options to be merged with the controller's default (class-level) settings.
     #
     def initialize(env_or_parent = {}, opts = {}, &blk)
       if env_or_parent.is_a?(Happy::Controller)
@@ -48,13 +48,13 @@ module Happy
         @processed_path  = []
       end
 
-      # Augment this instance's options hash with the options given to this constructor
-      options.merge!(opts)
+      # Augment this instance's settings hash with the hash given to this constructor
+      settings.merge!(opts)
 
-      # Copy missing options from our parent
+      # Copy missing settings from our parent
       if @parent_controller
-        CASCADING_OPTIONS.each do |opt|
-          options[opt] ||= @parent_controller.options[opt]
+        CASCADING_SETTINGS.each do |name|
+          settings[name] ||= @parent_controller.settings[name]
         end
       end
 

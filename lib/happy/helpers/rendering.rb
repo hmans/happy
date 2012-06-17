@@ -20,7 +20,7 @@ module Happy
       # Render a template from the controller's view folder.
       #
       def render_template(name, variables = {}, &blk)
-        path = options[:views] || './views'
+        path = settings[:views] || './views'
         full_name = File.expand_path(File.join(path, name))
 
         # load and cache template

@@ -22,7 +22,7 @@ module Happy
       end
 
       def load_script(name)
-        file_name = File.expand_path(File.join(options[:directory], name))
+        file_name = File.expand_path(File.join(settings[:directory], name))
         File.read(file_name)
       end
 
