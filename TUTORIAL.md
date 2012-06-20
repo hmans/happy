@@ -214,7 +214,38 @@ end
 Note that calling `serve!` will finish processing of the current request.
 
 ### Passing control over the request to another controller or Rack app
-_TODO_
+
+Happy allows you to modularize your application into several separate controller classes. For example, you could put your admin backend's code into a separate controller and then invoke it within the `/admin` path. For this, you would use the `run` command. Kinda like this:
+
+``` ruby
+class MyAdminController < Happy::Controller
+  def route
+    on 'users' do
+      # ...
+      # do some user admin stuff here
+    end
+
+    on 'articles' do
+      # ...
+      # do some articles admin stuff here
+    end
+
+    render 'admin/home.erb'
+  end
+end
+
+class MyApp < Happy::Controller
+  def route
+    on 'admin' do
+      run MyAdminController
+    end
+
+    render 'home.erb'
+  end
+end
+```
+
+Yup, this also means that you can build reusable controllers that you can distribute within gems for other Happy developers to use.
 
 
 ----
@@ -222,11 +253,60 @@ _TODO_
 ## Permission Managament
 
 ### Setting and querying permissions
+
+Happy contains a light-weight run-time permission management system powered by the [Allowance](https://github.com/hmans/allowance) gem. Using the `can` object, you can declare (and later query) permissions at runtime.
+
+Example:
+
+``` ruby
+class MyApp < Happy::Controller
+  def setup_permissions
+    if current_user
+      # Logged in users can submit new stuff
+      can.submit!
+
+      # But only admin users can edit and delete it.
+      if current_user.is_admin?
+        can.edit!
+        can.delete!
+      end
+    end
+  end
+
+  def route
+    setup_permissions    
+
+    on 'submit' do
+      if can.submit?
+        render 'submit.erb'
+      else
+        redirect! '/login'
+      end
+    end
+
+    # Paths are defined dynamically, so the following is possible, too:
+    if can.edit?
+      on('edit') { render 'edit.erb' }
+    end
+
+    if can.delete?
+      on('delete') { render 'delete.erb' }
+    end
+
+    render 'home.erb'
+  end
+
+  def current_user
+    # ...a method returning the current user.
+  end
+end
+```
+
+### Permissions for specific objects
 _TODO_
 
-### Permissions for ActiveModel classes
+### ActiveModel integration
 _TODO_
-
 
 ----
 
@@ -243,10 +323,16 @@ _TODO_
 ### Setting & Reading Cookies
 _TODO_
 
-### Using HAML in Happy
+### Using HAML (and other view engines) in Happy
+_TODO_
+
+### Serving assets (stylesheets, JavaScript files etc.)
 _TODO_
 
 ### Caching
+_TODO_
+
+### Dealing with users and authentication
 _TODO_
 
 ### Using `ResourceController`
