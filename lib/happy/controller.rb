@@ -106,7 +106,7 @@ module Happy
     #       def my_little_helper
     #         "something useful"
     #       end
-    #      end
+    #     end
     #
     def self.helpers(*args, &blk)
       args.flatten.each do |arg|
