@@ -5,7 +5,6 @@ require 'happy/controller/routing'
 require 'happy/controller/actions'
 require 'happy/controller/rackable'
 require 'happy/controller/configurable'
-require 'happy/controller/cascadable'
 require 'happy/controller/permissions'
 
 module Happy
@@ -19,7 +18,6 @@ module Happy
     include Actions
     include Rackable
     include Configurable
-    include Cascadable
     include Permissions
     include Happy::Helpers
 
