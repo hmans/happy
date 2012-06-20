@@ -120,8 +120,26 @@ cache_control 'public, max-age=3600, must-revalidate'
 
 For a complete list, please check the documentation for [`Happy::Controller::Actions`](http://rdoc.info/github/hmans/happy/master/Happy/Controller/Actions).
 
+
 ### Rendering view templates
-_TODO_
+
+Obviously, just serving simple strings isn't really what you want in most applications, so Happy also allows you to render view templates through myriad of available template engines. (Happy uses the [tilt](https://github.com/rtomayko/tilt) gem, so any template engine supported by tilt is also supported by Happy.)
+
+All template rendering is done through the `render` method. Simply pass the name of a template file. For example:
+
+``` ruby
+class MyApp < Happy::Controller
+  def route
+    on('info') { render 'info.erb' }
+    on('help') { render 'help.erb' }
+
+    render 'home.erb'
+  end
+end
+```
+
+The default directory Happy will look for view templates in is the `views/` subdirectory of your application. This is configurable, of course; more on configuration alter.
+
 
 ### Using layouts
 _TODO_
@@ -144,6 +162,8 @@ end
 Note that calling `serve!` will finish processing of the current request.
 
 
+----
+
 ## Permission Managament
 
 ### Setting and querying permissions
@@ -153,7 +173,10 @@ _TODO_
 _TODO_
 
 
+----
 
+## Controller configuration
+_TODO_
 
 ----
 
@@ -163,6 +186,9 @@ _TODO_
 _TODO_
 
 ### Setting & Reading Cookies
+_TODO_
+
+### Using HAML in Happy
 _TODO_
 
 ### Caching
