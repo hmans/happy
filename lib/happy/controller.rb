@@ -89,6 +89,36 @@ module Happy
 
   private
 
+    # Adds helper methods to the base class for all controllers. Use this
+    # to define application-level helper methods that you want to have available
+    # in all views, even if they're begin rendered by a controller different from
+    # your application controller.
+    #
+    # Modules passed to this method will be included into the base controller class.
+    # Example:
+    #
+    #     helpers MyApp::Helpers
+    #
+    # Alternatively, you can specify a block that will be executed against the
+    # base controller class like this:
+    #
+    #     helpers do
+    #       def my_little_helper
+    #         "something useful"
+    #       end
+    #      end
+    #
+    def self.helpers(*args, &blk)
+      args.flatten.each do |arg|
+        case arg
+          when Module then Happy::Controller.send(:include, arg)
+          else raise "Invalid helper specified."
+        end
+      end
+
+      Happy::Controller.class_exec(&blk) if blk
+    end
+
     def current_url(*extras)
       url_for(processed_path, extras)
     end
