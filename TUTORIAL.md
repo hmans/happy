@@ -142,10 +142,62 @@ The default directory Happy will look for view templates in is the `views/` subd
 
 
 ### Using layouts
-_TODO_
+
+Happy allows you to define a view template as a layout template, applying it to every response generated. Use the `layout` command to set it. For example:
+
+``` ruby
+class MyApp < Happy::Controller
+  def route
+    layout 'layouts/default.erb'
+
+    # From a previous example...
+    on('info') { render 'info.erb' }
+    on('help') { render 'help.erb' }
+
+    on('admin') do
+      # use a different layout inside the admin section
+      layout 'layouts/admin.erb'
+      render 'admin.erb'
+    end
+
+    render 'home.erb'
+  end
+end
+```
+
+The layout file itself should contain an invocation of `yield` where the inner part of the response should appear.
+
 
 ### Adding view helpers
-_TODO_
+
+In Happy, view templates are rendered within the scope of your controller (as opposed to a specific view context object), so any method from your controller will also be available in your views.
+
+It is advised, however, that you specifically declare helper methods using the `helper` command so that they are available to _all_ controllers. This is necessary if you modularize your applications into several different controller classes that share view files.
+
+Here's an example:
+
+``` ruby
+class MyApp < Happy::Controller
+  # You can provide a block that contains method definitions.
+  #
+  helpers do
+    def some_helper
+      'something useful'
+    end
+  end
+
+  # Alternatively, you can provide a module that contains your
+  # helper methods
+  #
+  helpers MyHelpers
+
+  def route
+    # home.erb contains calls to helper methods
+    render 'home.erb'
+  end
+end
+```
+
 
 ### Serving responses explicitly
 
@@ -160,6 +212,9 @@ end
 ```
 
 Note that calling `serve!` will finish processing of the current request.
+
+### Passing control over the request to another controller or Rack app
+_TODO_
 
 
 ----
