@@ -80,6 +80,13 @@ module Happy
       url_for(@root_url, extras)
     end
 
+    # Returns the application controller (ie, the root controller running this
+    # application.)
+    #
+    def app
+      @parent_controller ? @parent_controller.app : self
+    end
+
   private
 
     def current_url(*extras)
