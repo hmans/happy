@@ -83,6 +83,34 @@ end
 In other words, `on` lets you provide code blocks that are only executed when a certain path has been requested. Note that `on` calls can be nested; also note that if one of these blocks returns just a string value, it will be rendered as the response.
 
 
+### Structuring Happy controllers
+
+Since controllers are just normal Ruby classes, you can use all the tools you know from Ruby to structure your application. For example, it is recommended to move the actual logic of your actions to separate methods, and just call those methods from within the `on` blocks. This makes your controllers easier to maintain and test. Here's an example:
+
+``` ruby
+class MyApp < Happy::Controller
+  def route
+    on('users')  { list_users }
+    on('images') { list_images }
+    homepage
+  end
+
+  def homepage
+    render 'home.erb'
+  end
+
+  def list_users
+    @users = User.all
+    render 'users.erb'
+  end
+
+  def list_images
+    @images = Image.all
+    render 'images.erb'
+  end
+end
+```
+
 ### Reacting on specific HTTP verbs
 
 While the `on` command doesn't care about the HTTP verb being used to make the request, there's also `on_get`, `on_post`, `on_put` and `on_delete`. Note that these can also be called without a path argument. Here's an example:
