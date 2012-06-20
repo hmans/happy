@@ -3,6 +3,8 @@
 Welcome to the Happy Book of Happy, an introduction on how to develop web applications using Happy, a cute little web application toolkit for Ruby! Let's get straight to it, shall we?
 
 
+----
+
 ## The Basics
 
 ### "Hello World" with Happy
@@ -101,7 +103,22 @@ end
 ```
 
 ### Setting headers
-_TODO_
+
+You can use the `header` method to set any type of HTTP header for your response. Example:
+
+``` ruby
+# Set the 'Content-type' header to 'text/css'
+header :content_type, 'text/css'
+```
+
+There's a couple of shortcut methods available to set certain headers directly. Examples:
+
+```ruby
+content_type 'text/css'
+cache_control 'public, max-age=3600, must-revalidate'
+```
+
+For a complete list, please check the documentation for [`Happy::Controller::Actions`](http://rdoc.info/github/hmans/happy/master/Happy/Controller/Actions).
 
 ### Rendering view templates
 _TODO_
@@ -112,6 +129,21 @@ _TODO_
 ### Adding view helpers
 _TODO_
 
+### Serving responses explicitly
+
+You will have noticed by now that if a path block (or the `route` method itself) returns a simple string, it will be used for the response body. However, you can also serve responses explicitly using the `serve!` method. Example:
+
+``` ruby
+class MyApp < Happy::Controller
+  def route
+    serve! 'my response', :content_type => 'text/plain'
+  end
+end
+```
+
+Note that calling `serve!` will finish processing of the current request.
+
+
 ## Permission Managament
 
 ### Setting and querying permissions
@@ -121,19 +153,25 @@ _TODO_
 _TODO_
 
 
-## Advanced Happy
+
+
+----
+
+## Happy Recipes
+
+### Writing & Reading Session Data
+_TODO_
+
+### Setting & Reading Cookies
+_TODO_
+
+### Caching
+_TODO_
 
 ### Using `ResourceController`
 _TODO_
 
 ### Using `ActiveModelResourceController`
-_TODO_
-
-
-
-## Happy Cookbook
-
-### Caching Recipes
 _TODO_
 
 ### Authenticating against Twitter, Facebook etc. using OmniAuth
