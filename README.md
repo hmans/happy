@@ -8,6 +8,8 @@ Happy is a toolkit for developing web applications using Ruby. Inspired by both 
 
 Furthermore, the way Happy handles incoming requests is vastly different from how most of the other frameworks do it, offering a new, extremely flexible and suspiciously fun way of building your application.
 
+**For an introduction, please check out the [The Happy Book of Happy](http://rdoc.info/github/hmans/happy/master/file/TUTORIAL.md).**
+
 ## Installing
 
 Happy is available as a RubyGem, so just install it through `gem install happy` (or add it to your project's `Gemfile`. You know the drill.)
