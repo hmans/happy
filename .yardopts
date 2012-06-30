@@ -1,1 +1,1 @@
---private --protected lib/**/*.rb - README.md TUTORIAL.md LICENSE
+--private --protected lib/**/*.rb - README.md TUTORIAL.md CHANGELOG.md LICENSE
