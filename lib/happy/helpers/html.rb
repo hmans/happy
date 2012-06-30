@@ -27,6 +27,7 @@ module Happy
 
       def link_to(name, *target)
         options = target.last.is_a?(Hash) ? target.pop : {}
+        target = name if target.empty?
         html_tag(:a, options.merge(:href => url_for(*target))) { name }
       end
 
