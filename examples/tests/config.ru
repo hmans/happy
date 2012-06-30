@@ -4,9 +4,7 @@ lib_path = File.expand_path("#{File.dirname(__FILE__)}/../lib")
 $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
 
 require 'happy'
-require 'happy/extras/action_controller'
-require 'happy/extras/resource_controller'
-
+require 'happy-resources'
 require 'haml'
 
 # Controllers are the core building blocks of Happy applications.
@@ -170,7 +168,7 @@ class ActionTest < Happy::Extras::ActionController
   end
 end
 
-class ResourceTest < Happy::Extras::ResourceController
+class ResourceTest < Happy::Resources::ResourceController
   %w{index show new create edit update destroy}.each do |action|
     define_method action do
       "You called #{action}!"
