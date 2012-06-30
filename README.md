@@ -2,6 +2,9 @@
 
 **The Happy Web Application Toolkit for Ruby.**
 
+[![Build Status](https://secure.travis-ci.org/hmans/happy.png?branch=master)](http://travis-ci.org/hmans/happy)
+[![Dependency Status](https://gemnasium.com/hmans/happy.png)](https://gemnasium.com/hmans/happy)
+
 ## Introduction
 
 Happy is a toolkit for developing web applications using Ruby. Inspired by both Sinatra and Rails, it sits somewhere in the middle, trying to offer the super-light-weight attitude and flexibility of Sinatra, the comfort and power of Rails, and adding a big chunk of extensibility and modularity that any lover of object-oriented application design will enjoy.
