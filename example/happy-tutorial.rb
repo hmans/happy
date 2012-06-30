@@ -129,5 +129,60 @@ module HappyTutorial
     end
   end
 
+  # ### Structuring Happy Controllers
+
+  # Since controllers are just normal Ruby classes, you can use all the tools you
+  # know from Ruby to structure your application. For example, it is recommended
+  # to move the actual logic of your actions to separate methods, and just call
+  # those methods from within the on blocks. This makes your controllers easier
+  # to maintain and test. Here's an example:
+
+  class MethodExample < Happy::Controller
+    def route
+      on('users')  { list_users }
+      on('images') { list_images }
+      homepage
+    end
+
+    def homepage
+      "This is the homepage!"
+    end
+
+    def list_users
+      "This is a list of users."
+    end
+
+    def list_images
+      "This is a list of images."
+    end
+  end
+
+
+
+  # ## Rendering Responses
+
+  # ### Rendering Templates
+  # _TODO_
+
+  # ### Setting Headers
+  # _TODO_
+
+  # ### Caching
+  # _TODO_
+
+  # ### Rendering Objects
+  # _TODO_
+
+  # ## Helpers
+
+  # ### What are helpers?
+  # _TODO_
+
+  # ### Built-in helpers
+  # _TODO_
+
+  # ### Writing your own helpers
+  # _TODO_
+
 # The end.
 end

@@ -1,5 +1,5 @@
 require 'happy'
-Dir['./*.rb'].each { |n| require n }
+require './happy-tutorial'
 
 class TutorialMounter < Happy::Controller
   def route

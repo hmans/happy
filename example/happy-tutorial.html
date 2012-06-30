@@ -270,10 +270,167 @@ to retrieve parameters from the actual URLs requested.</p>
   <span class="k">end</span></pre></div>
       </td>
     </tr>
-    <tr id='section-16'>
+    <tr id='section-Structuring_Happy_Controllers'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-16">&#182;</a>
+          <a class="pilcrow" href="#section-Structuring_Happy_Controllers">&#182;</a>
+        </div>
+        <h3>Structuring Happy Controllers</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-17'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-17">&#182;</a>
+        </div>
+        <p>Since controllers are just normal Ruby classes, you can use all the tools you
+know from Ruby to structure your application. For example, it is recommended
+to move the actual logic of your actions to separate methods, and just call
+those methods from within the on blocks. This makes your controllers easier
+to maintain and test. Here&rsquo;s an example:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">class</span> <span class="nc">MethodExample</span> <span class="o">&lt;</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Controller</span>
+    <span class="k">def</span> <span class="nf">route</span>
+      <span class="n">on</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>  <span class="p">{</span> <span class="n">list_users</span> <span class="p">}</span>
+      <span class="n">on</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">list_images</span> <span class="p">}</span>
+      <span class="n">homepage</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">homepage</span>
+      <span class="s2">&quot;This is the homepage!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">list_users</span>
+      <span class="s2">&quot;This is a list of users.&quot;</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">list_images</span>
+      <span class="s2">&quot;This is a list of images.&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Rendering_Responses'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Rendering_Responses">&#182;</a>
+        </div>
+        <h2>Rendering Responses</h2>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Rendering_Templates'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Rendering_Templates">&#182;</a>
+        </div>
+        <h3>Rendering Templates</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Setting_Headers'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Setting_Headers">&#182;</a>
+        </div>
+        <h3>Setting Headers</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Caching'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Caching">&#182;</a>
+        </div>
+        <h3>Caching</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Rendering_Objects'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Rendering_Objects">&#182;</a>
+        </div>
+        <h3>Rendering Objects</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Helpers'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Helpers">&#182;</a>
+        </div>
+        <h2>Helpers</h2>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-What_are_helpers?'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-What_are_helpers?">&#182;</a>
+        </div>
+        <h3>What are helpers?</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Built-in_helpers'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Built-in_helpers">&#182;</a>
+        </div>
+        <h3>Built-in helpers</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Writing_your_own_helpers'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Writing_your_own_helpers">&#182;</a>
+        </div>
+        <h3>Writing your own helpers</h3>
+
+<p><em>TODO</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-27'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-27">&#182;</a>
         </div>
         <p>The end.</p>
 
