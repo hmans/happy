@@ -79,7 +79,9 @@ module Happy
       def run(thing, options = {}, &blk)
         if thing.is_a?(Class) && thing.ancestors.include?(Happy::Controller)
           # Happy controllers!
-          thing.new(self, options, &blk).route
+          thing.new(self, options, &blk).tap do |c|
+            c.serve! c.route
+          end
         elsif thing.respond_to?(:call)
           # Rack apps!
           throw :done, thing.call(request.env)
