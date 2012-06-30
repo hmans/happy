@@ -1,7 +1,9 @@
 module Happy
   class Controller
     module Rackable
-      extend ActiveSupport::Concern
+      def self.included(base)
+        base.extend ClassMethods
+      end
 
       def handle_request
         r = catch :done do

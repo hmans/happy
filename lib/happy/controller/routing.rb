@@ -13,7 +13,7 @@ module Happy
 
         args.each do |name|
           # If a path name has been given, match it against the next request path part.
-          if name.present?
+          if name
             # convert symbols to ":foo" type string
             name = ":#{name}" if name.is_a?(Symbol)
             path_match = path_to_regexp(name).match(unprocessed_path.first)

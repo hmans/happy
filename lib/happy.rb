@@ -1,10 +1,8 @@
 require 'rack'
 
-# Happy is currently making use of ActiveSupport. I'm not 100% happy
-# about this dependency and will eventually try to remove it.
-# The following line should at least make sure that the individual
-# components are autoloaded as needed.
-require 'active_support'
+require 'active_support/inflector'
+require 'active_support/core_ext/string'
+require 'active_support/core_ext/hash'
 
 require 'happy/version'
 require 'happy/errors'

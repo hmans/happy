@@ -42,7 +42,7 @@ module Happy
         @processed_path = env_or_parent.processed_path
       else
         @env = env_or_parent
-        @unprocessed_path = request.path.split('/').reject {|s| s.blank? }
+        @unprocessed_path = request.path.split('/').reject {|s| s.empty? }
         @processed_path  = []
       end
 

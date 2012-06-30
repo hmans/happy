@@ -1,7 +1,9 @@
 module Happy
   class Controller
     module Configurable
-      extend ActiveSupport::Concern
+      def self.included(base)
+        base.extend ClassMethods
+      end
 
       # Return a hash containing this controller instance's settings.
       #
