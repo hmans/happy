@@ -19,15 +19,20 @@ module Happy
 
       # Render a template from the controller's view folder.
       #
-      def render_template(name, variables = {}, &blk)
+      def render_template(name, variables = {}, engine_options = {}, &blk)
         path = settings[:views] || './views'
         full_name = File.expand_path(File.join(path, name))
 
         # load and cache template
         @@cached_templates ||= {}
         t = @@cached_templates[full_name] =
-          (Happy.env.production? && @@cached_templates[full_name]) ||
-          Tilt.new(full_name, :default_encoding => 'utf-8', :outvar => "@output_buffer")
+          (Happy.env.production? && @@cached_templates[full_name]) || begin
+            engine_options = {
+              :default_encoding => 'utf-8',
+              :outvar => "@output_buffer"    # for erb
+            }.merge(engine_options)
+            Tilt.new(full_name, engine_options)
+          end
 
         # render template
         t.render(self, variables, &blk)
