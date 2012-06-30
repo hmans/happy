@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>config.ru</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="../00-hello-world/config.html">config.ru</a>
+          <a class="source" href="../01-handling-urls/config.html">config.ru</a>
+          <a class="source" href="config.html">config.ru</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>config.ru</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p>Just run this script through the &lsquo;rackup&rsquo; command.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">lib_path</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span><span class="si">}</span><span class="s2">/../lib&quot;</span><span class="p">)</span>
+<span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">unshift</span> <span class="n">lib_path</span> <span class="k">unless</span> <span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">lib_path</span><span class="p">)</span>
+
+<span class="nb">require</span> <span class="s1">&#39;happy&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;happy/extras/action_controller&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;happy/extras/resource_controller&#39;</span>
+
+<span class="nb">require</span> <span class="s1">&#39;haml&#39;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>Controllers are the core building blocks of Happy applications.
+They&rsquo;re also just Rack apps, so in any Happy app, you will
+declare at least a &ldquo;root&rdquo; controller class and run that through Rack.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">TestApp</span> <span class="o">&lt;</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Controller</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>A controller&rsquo;s most important method is #route. Whenever a request hits
+your application, a new instance of your root controller class is
+created, and its #route method is called.</p>
+
+<p>This method can be as simple or complex as you like. In this example
+application, it wraps around a couple of annotated Happy examples.
+Usually, you&rsquo;d use the #path method to specify code to be executed if
+a certain path was requested; in this app, we&rsquo;re using a custom #example
+method, that does the same thing but also records the example in a hash
+so we can generated a &ldquo;table of contents&rdquo; in index.erb.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">set</span> <span class="ss">:views</span><span class="p">,</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span><span class="si">}</span><span class="s2">/views&quot;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">route</span>
+    <span class="n">example</span> <span class="s1">&#39;Returning just a string&#39;</span> <span class="k">do</span>
+      <span class="s2">&quot;I&#39;m just a string!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Explicit responses&#39;</span> <span class="k">do</span>
+      <span class="n">serve!</span> <span class="s2">&quot;I was served through #serve!&quot;</span>
+      <span class="n">serve!</span> <span class="s2">&quot;I&#39;m not being served, since the above call to #serve! halted processing.&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Content-type&#39;</span> <span class="k">do</span>
+      <span class="n">content_type</span> <span class="s1">&#39;text/css&#39;</span>
+      <span class="s2">&quot;/* I&#39;m CSS! */</span><span class="se">\n\n</span><span class="s2">body { color: red }</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Path parameters&#39;</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;hello&#39;</span> <span class="k">do</span>
+        <span class="n">on</span> <span class="ss">:name</span> <span class="k">do</span>
+          <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="s2">&quot;Try </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;hendrik&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Inline path parameters&#39;</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;hello-:name&#39;</span> <span class="k">do</span>
+        <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">!&quot;</span>
+      <span class="k">end</span>
+
+      <span class="s2">&quot;Try </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;hello-hendrik&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Permissions&#39;</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>set up permissions ;&ndash;)</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">can</span><span class="o">.</span><span class="n">dance!</span>
+
+      <span class="n">on</span> <span class="s1">&#39;dance&#39;</span> <span class="k">do</span>
+        <span class="k">if</span> <span class="n">can</span><span class="o">.</span><span class="n">dance?</span>
+          <span class="s2">&quot;You can dance.&quot;</span>
+        <span class="k">else</span>
+          <span class="s2">&quot;You can not dance.&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="s2">&quot;Can you </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;dance&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;dance&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">?&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Layouts&#39;</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;with-layout&#39;</span> <span class="k">do</span>
+        <span class="n">layout</span> <span class="s1">&#39;layout.erb&#39;</span>
+
+        <span class="n">on</span> <span class="s1">&#39;changed-my-mind&#39;</span> <span class="k">do</span>
+          <span class="n">layout</span> <span class="kp">false</span>
+          <span class="s2">&quot;This should render without a layout.&quot;</span>
+        <span class="k">end</span>
+
+        <span class="s2">&quot;This should render with a layout. But </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;changed-my-mind&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> shouldn&#39;t!&quot;</span>
+      <span class="k">end</span>
+
+      <span class="s2">&quot;This should render without a layout. But </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;with-layout&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> should.&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Invoking other controllers&#39;</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>creata new controller on the fly</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">c</span> <span class="o">=</span> <span class="no">Happy</span><span class="o">.</span><span class="n">route</span> <span class="k">do</span>
+        <span class="s2">&quot;Controller wrapping works, yay!&quot;</span>
+      <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>pass control over the request to that controller</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">run</span> <span class="n">c</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Invoking Rack apps&#39;</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-7">&#182;</a>
+        </div>
+        <p>define a Rack app</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">rackapp</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span> <span class="o">[</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;text/html&#39;</span><span class="p">},</span> <span class="o">[</span><span class="s2">&quot;It works!&quot;</span><span class="o">]]</span> <span class="p">}</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>pass control over the request to the Rack application</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">run</span> <span class="n">rackapp</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;Errors&#39;</span> <span class="k">do</span>
+      <span class="n">null</span> <span class="o">=</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Controller</span><span class="o">.</span><span class="n">new</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-9">&#182;</a>
+        </div>
+        <p>Trigger an error. This should display a nice error page.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">null</span><span class="o">.</span><span class="n">foobar</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;ActionController&#39;</span> <span class="k">do</span>
+      <span class="n">run</span> <span class="no">ActionTest</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s1">&#39;ResourceController&#39;</span> <span class="k">do</span>
+      <span class="n">run</span> <span class="no">ResourceTest</span>
+    <span class="k">end</span>
+
+    <span class="n">example</span> <span class="s2">&quot;Block Helpers&quot;</span> <span class="k">do</span>
+      <span class="n">on</span><span class="p">(</span><span class="s1">&#39;erb&#39;</span><span class="p">)</span>  <span class="p">{</span> <span class="n">render</span> <span class="s1">&#39;block_helpers.erb&#39;</span> <span class="p">}</span>
+      <span class="n">on</span><span class="p">(</span><span class="s1">&#39;haml&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">render</span> <span class="s1">&#39;block_helpers.haml&#39;</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="n">render</span> <span class="s1">&#39;index.erb&#39;</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">blockquotify</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blk</span><span class="p">)</span>
+    <span class="n">concat_output</span> <span class="n">html_tag</span><span class="p">(</span><span class="ss">:blockquote</span><span class="p">)</span> <span class="p">{</span> <span class="n">capture_template_block</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blk</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">examples</span><span class="p">;</span> <span class="vi">@examples</span> <span class="o">||=</span> <span class="p">{};</span> <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">path_name</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span><span class="p">)</span>
+    <span class="n">path_name</span> <span class="o">||=</span> <span class="nb">name</span><span class="o">.</span><span class="n">parameterize</span>
+    <span class="n">examples</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">path_name</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-10'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-10">&#182;</a>
+        </div>
+        <p>Create a path containing the example&rsquo;s code block</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">on</span> <span class="n">path_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ActionTest</span> <span class="o">&lt;</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Extras</span><span class="o">::</span><span class="no">ActionController</span>
+  <span class="k">def</span> <span class="nf">foo</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="s1">&#39;id&#39;</span><span class="o">]</span>
+      <span class="s2">&quot;You called foo with ID </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="s1">&#39;id&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;You called foo without an ID.&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">bar</span>
+    <span class="s2">&quot;The bar is open!&quot;</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="sx">%{</span>
+<span class="sx">      This is the index method.</span>
+<span class="sx">      Try </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="si">}</span><span class="sx"></span>
+<span class="sx">      (</span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;with an ID&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;123&#39;</span><span class="p">)</span><span class="si">}</span><span class="sx">)</span>
+<span class="sx">      or </span><span class="si">#{</span><span class="n">link_to</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">current_url</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span><span class="si">}</span><span class="sx">!</span>
+<span class="sx">    }</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ResourceTest</span> <span class="o">&lt;</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Extras</span><span class="o">::</span><span class="no">ResourceController</span>
+  <span class="sx">%w{index show new create edit update destroy}</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">action</span><span class="o">|</span>
+    <span class="n">define_method</span> <span class="n">action</span> <span class="k">do</span>
+      <span class="s2">&quot;You called </span><span class="si">#{</span><span class="n">action</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">run</span> <span class="no">TestApp</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

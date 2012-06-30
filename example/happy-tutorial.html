@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>happy-tutorial.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="config.html">config.ru</a>
+          <a class="source" href="happy-tutorial.html">happy-tutorial.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>happy-tutorial.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p>The most important class Happy provides is <a href="http://rdoc.info/github/hmans/happy/master/Happy/Controller">Happy::Controller</a>.
+Pretty much everything you develop with Happy will be some class derived from it.
+Happy Controllers are discrete applications that can be mounted as Rack
+apps or invoked from within other Happy Controllers, but more on that
+later.</p>
+
+<p>Every controller defines a <code>#route</code> instance method that is called for
+every request hitting your application. You can do all sorts of stuff
+inside that method (first and foremost, it allows you to deal with specific
+URLs being requested), but more on that later. For now, we&rsquo;ll simply return
+a string &mdash; which will be returned as the response to the browser.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">HelloWorld</span> <span class="o">&lt;</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Controller</span>
+  <span class="k">def</span> <span class="nf">route</span>
+    <span class="s2">&quot;Hello, world!&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Handling_URLs'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Handling_URLs">&#182;</a>
+        </div>
+        <h3>Handling URLs</h3>
+
+<p>Obviously, your app should be able to do a lot more than just display
+a string of text at its root URL. Fret not, for Happy gives you powerful
+tools to create pretty much any URL structure you can think of; however,
+the way it works is <strong>significantly different</strong> from what you may be used
+from other MVC frameworks like Rails or Padrino.</p>
+
+<p>To sum things up, the main difference in Happy is that each and every request
+that hits your application will go through the root controller&rsquo;s <code>#route</code>
+method, leaving it up to that method what happens next.</p>
+
+<p>In practice this means that instead of mapping routes to specific controllers
+or actions, in Happy requests pass through a linear flow of logic that
+makes decisions about how to handle the request on the fly.</p>
+
+<p>Happy provides the <code>#on</code> method that allows you to provide code that
+is only executed if a matching URL is requested. These can be nested,
+too; for example, this block of code will handle the <code>/foo</code> and <code>/foo/bar</code>
+URLs.</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">MyApp</span> <span class="o">&lt;</span> <span class="no">Happy</span><span class="o">::</span><span class="no">Controller</span>
+  <span class="k">def</span> <span class="nf">route</span>
+    <span class="n">on</span> <span class="s1">&#39;foo&#39;</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;bar&#39;</span> <span class="k">do</span>
+        <span class="s2">&quot;You requested /foo/bar!&quot;</span>
+      <span class="k">end</span>
+
+      <span class="s2">&quot;You requested /foo!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="s2">&quot;You requested /!&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
