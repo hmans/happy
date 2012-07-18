@@ -49,6 +49,22 @@ module Happy
       end
     end
 
+    context 'when a controller class is subclassed' do
+      class ParentController < Controller
+        set :views, './foo/'
+        set :foo, 'bar'
+      end
+
+      class ChildController < ParentController
+        set :foo, 'baz'
+      end
+
+      specify 'its settings are copied to the subclass' do
+        ChildController.settings[:foo].should == 'baz'
+        ChildController.settings[:views].should == './foo/'
+      end
+    end
+
     describe 'settings passed to the initializer' do
       it "override default settings" do
         @instance = TestController.new({}, :foo => 'baz')
