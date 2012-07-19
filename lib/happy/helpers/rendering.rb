@@ -19,7 +19,8 @@ module Happy
       #
       def render_template(name, variables = {}, engine_options = {}, &blk)
         path = settings[:views] || './views'
-        full_name = File.expand_path(File.join(path, name))
+        full_name = Happy::Template.discover(path, name)
+        raise "Could not find template '#{name}' within '#{path}'" unless full_name
 
         # load and cache template
         @@cached_templates ||= {}
