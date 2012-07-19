@@ -8,6 +8,7 @@ require 'happy/version'
 require 'happy/errors'
 require 'happy/helpers'
 require 'happy/controller'
+require 'happy/template'
 
 module Happy
   def self.env

@@ -1,5 +1,3 @@
-require 'tilt'
-
 module Happy
   module Helpers
     module Rendering
@@ -25,14 +23,17 @@ module Happy
 
         # load and cache template
         @@cached_templates ||= {}
-        t = @@cached_templates[full_name] =
-          (Happy.env.production? && @@cached_templates[full_name]) || begin
-            engine_options = {
-              :default_encoding => 'utf-8',
-              :outvar => "@output_buffer"    # for erb
-            }.merge(engine_options)
-            Tilt.new(full_name, engine_options)
-          end
+
+        # t = @@cached_templates[full_name] =
+        #   (Happy.env.production? && @@cached_templates[full_name]) || begin
+        #     engine_options = {
+        #       :default_encoding => 'utf-8',
+        #       :outvar => "@output_buffer"    # for erb
+        #     }.merge(engine_options)
+        #     Tilt.new(full_name, engine_options)
+        #   end
+
+        t = Happy::Template.new(full_name)
 
         # render template
         t.render(self, variables, &blk)
