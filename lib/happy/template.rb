@@ -1,5 +1,3 @@
-require 'happy/template/haml'
-require 'happy/template/erb'
 
 module Happy
   module Template
@@ -11,7 +9,7 @@ module Happy
     end
 
     def self.available_engines
-      ['erb', 'haml']
+      ['erb', 'haml', 'sass', 'scss']
     end
 
     def self.discover(path, name, format = 'html')
@@ -38,4 +36,8 @@ module Happy
       false
     end
   end
+end
+
+Happy::Template.available_engines.each do |engine|
+  require "happy/template/#{engine}"
 end
