@@ -1,9 +1,13 @@
 require 'happy/template/haml'
+require 'happy/template/erb'
 
 module Happy
   module Template
-    def self.new(path)
-      Happy::Template::Haml.new(path)
+    def self.get(path)
+      # TODO: add some caching
+      engine = path.split('.').last
+      klass = "happy/template/#{engine}".camelize.constantize
+      klass.new(path)
     end
 
     def self.available_engines

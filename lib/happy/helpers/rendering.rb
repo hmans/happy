@@ -34,7 +34,7 @@ module Happy
         #     Tilt.new(full_name, engine_options)
         #   end
 
-        t = Happy::Template.new(full_name)
+        t = Happy::Template.get(full_name)
 
         # render template
         t.render(self, variables, &blk)
