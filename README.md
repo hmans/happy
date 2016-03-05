@@ -1,7 +1,7 @@
 # The Happy Web Application Toolkit
 
 [![Build Status](https://secure.travis-ci.org/hmans/happy.png?branch=master)](http://travis-ci.org/hmans/happy)
-[![Dependency Status](https://gemnasium.com/hmans/happy.png)](https://gemnasium.com/hmans/happy)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 ## Introduction
 
